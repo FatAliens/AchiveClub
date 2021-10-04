@@ -1,0 +1,236 @@
+﻿@page "/"
+@using AchiveClub.Shared
+@inject HttpClient Http
+
+<Modal @bind-Visible="userEditVisible">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Edit Modal</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <TextEdit Placeholder="FirstName" @bind-Text="@editableUser.FirstName" />
+                <TextEdit Placeholder="LastName" @bind-Text="@editableUser.LastName" />
+                <TextEdit Placeholder="Password" Role="TextRole.Password" @bind-Text="@editableUser.Password" />
+                <Addons>
+                    <Addon AddonType="AddonType.Start"><AddonLabel>@@</AddonLabel></Addon>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="Email" Role="TextRole.Email" @bind-Text="@editableUser.Email" />
+                    </Addon>
+                </Addons>
+            </Form>
+        </ModalBody>
+        <ModalFooter>
+            <Button Block Color="Color.Success" Clicked="()=>UpdateUser(editableUser)">Save</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal @bind-Visible="achiveEditVisible">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Edit Achive</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <TextEdit Placeholder="Title" @bind-Text="@editableAchive.Title" />
+                <TextEdit Placeholder="Title" @bind-Text="@editableAchive.Description" />
+                <TextEdit Placeholder="Title" @bind-Text="@editableAchive.XpString" MaskType="MaskType.Numeric"/>
+                <TextEdit Placeholder="Title" @bind-Text="@editableAchive.LogoURL" Role="TextRole.Url"/>
+            </Form>
+        </ModalBody>
+        <ModalFooter>
+            <Button Block Color="Color.Success" Clicked="()=>UpdateAchiveAsync(editableAchive)">Save</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Row>
+    <Column>
+        <Heading>Users</Heading>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Button Clicked="AddUser" Block Color="Color.Success">Add User</Button>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        @if (users == null)
+        {
+            <Alert Color="Color.Info" Visible>
+                <AlertMessage>Loading...</AlertMessage>
+            </Alert>
+        }
+        else if (!users.Any())
+        {
+            <Alert Color="Color.Info" Visible>
+                <AlertMessage>Нет пользователей...</AlertMessage>
+            </Alert>
+        }
+        else
+        {
+            <Table>
+                <TableHeader>
+                    <TableHeaderCell>Id</TableHeaderCell>
+                    <TableHeaderCell>First Name</TableHeaderCell>
+                    <TableHeaderCell>Last Name</TableHeaderCell>
+                    <TableHeaderCell>Email</TableHeaderCell>
+                    <TableHeaderCell>Password</TableHeaderCell>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var user in users)
+                    {
+                        <TableRow>
+                            <TableRowCell>@user.Id</TableRowCell>
+                            <TableRowCell>@user.FirstName</TableRowCell>
+                            <TableRowCell>@user.LastName</TableRowCell>
+                            <TableRowCell>@user.Email</TableRowCell>
+                            <TableRowCell>@user.Password</TableRowCell>
+                            <TableRowCell>
+                                <Button Color="Color.Primary" Clicked="()=>EditUser(user)" Block>Edit</Button>
+                            </TableRowCell>
+                            <TableRowCell>
+                                <Button Color="Color.Danger" Clicked="()=>DeleteUserAsync(user.Id)" Block>Delete</Button>
+                            </TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        }
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Heading>Achivements</Heading>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Button Clicked="AddAchiveAsync" Block Color="Color.Success">Add User</Button>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        @if (achivements == null)
+        {
+            <Alert Color="Color.Info" Visible>
+                <AlertMessage>Loading...</AlertMessage>
+            </Alert>
+        }
+        else if (!achivements.Any())
+        {
+            <Alert Color="Color.Info" Visible>
+                <AlertMessage>Нет ачивок...</AlertMessage>
+            </Alert>
+        }
+        else
+        {
+            <Table>
+                <TableHeader>
+                    <TableHeaderCell>Id</TableHeaderCell>
+                    <TableHeaderCell>XP</TableHeaderCell>
+                    <TableHeaderCell>Title</TableHeaderCell>
+                    <TableHeaderCell>Description</TableHeaderCell>
+                    <TableHeaderCell>LogoURL</TableHeaderCell>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var achive in achivements)
+                    {
+                    <TableRow>
+                        <TableRowCell>@achive.Id</TableRowCell>
+                        <TableRowCell>@achive.Xp</TableRowCell>
+                        <TableRowCell>@achive.Title</TableRowCell>
+                        <TableRowCell>@achive.Description</TableRowCell>
+                        <TableRowCell>@achive.LogoURL</TableRowCell>
+                        <TableRowCell>
+                            <Button Color="Color.Primary" Clicked="()=>EditAchive(achive)" Block>Edit</Button>
+                        </TableRowCell>
+                        <TableRowCell>
+                            <Button Color="Color.Danger" Clicked="()=>DeleteAchiveAsync(achive.Id)" Block>Delete</Button>
+                        </TableRowCell>
+                    </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        }
+    </Column>
+</Row>
+
+@code {
+    private bool userEditVisible = false;
+    private User editableUser = new User();
+
+    private bool achiveEditVisible = false;
+    private Achive editableAchive = new Achive();
+
+    private User[] users;
+    private Achive[] achivements;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateUsers();
+        await UpdateAchivements();
+    }
+
+    private async Task UpdateUsers()
+    {
+        users = await Http.GetFromJsonAsync<User[]>("api/Users");
+    }
+
+    private async Task UpdateAchivements()
+    {
+        achivements = await Http.GetFromJsonAsync<Achive[]>("api/Achivements");
+    }
+
+    private async Task AddUser()
+    {
+        await Http.PostAsJsonAsync<User>("api/Users", new User() { FirstName = "Name", LastName = "Name1", Email = "Email", Password = "Password", CompletedAchivements = null });
+        await UpdateUsers();
+    }
+
+    private void EditUser(User user)
+    {
+        editableUser = user;
+        userEditVisible = true;
+    }
+
+    private async Task UpdateUser(User user)
+    {
+        await Http.PutAsJsonAsync<User>("api/Users", user);
+        await UpdateUsers();
+    }
+
+    private async Task DeleteUserAsync(int userId)
+    {
+        var responce = await Http.DeleteAsync($"api/Users/{userId}");
+        await UpdateUsers();
+    }
+
+    private async Task AddAchiveAsync()
+    {
+        await Http.PostAsJsonAsync<Achive>("api/Achivements", new Achive() { Title = "Title", Description = "Desc", Xp = 0, LogoURL = "nologo"});
+        await UpdateAchivements();
+    }
+
+    private void EditAchive(Achive achive)
+    {
+        editableAchive = achive;
+        achiveEditVisible = true;
+    }
+
+    private async Task UpdateAchiveAsync(Achive achive)
+    {
+        await Http.PutAsJsonAsync<Achive>("api/Achivements", achive);
+        await UpdateAchivements();
+    }
+
+    private async Task DeleteAchiveAsync(int achiveId)
+    {
+        var responce = await Http.DeleteAsync($"api/Achivements/{achiveId}");
+        await UpdateAchivements();
+    }
+}
