@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LiteDB;
 
-namespace AchiveClub.Shared
+namespace AchiveClub.Shared.Models
 {
     public class Achive
     {
@@ -20,7 +20,19 @@ namespace AchiveClub.Shared
         public string XpString
         {
             get => Xp.ToString();
-            set => Xp = int.Parse(value);
+            set
+            {
+                if(string.IsNullOrWhiteSpace(value))
+                {
+                    Xp = 0;
+                    return;
+                }
+
+                if(int.TryParse(value, out int result))
+                {
+                    Xp = result;
+                }
+            }
         }
     }
 }

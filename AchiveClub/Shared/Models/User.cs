@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LiteDB;
 
-namespace AchiveClub.Shared
+namespace AchiveClub.Shared.Models
 {
     public class User
     {
@@ -15,7 +15,7 @@ namespace AchiveClub.Shared
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        [BsonRef]
+        [BsonRef("Achivements")]
         public List<Achive> CompletedAchivements { get; set; }
     }
 }
