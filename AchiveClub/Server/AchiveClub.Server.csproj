@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AspNetCore.Identity.LiteDB\AspNetCore.Identity.LiteDB.csproj" />
     <ProjectReference Include="..\Client\AchiveClub.Client.csproj" />
     <ProjectReference Include="..\Shared\AchiveClub.Shared.csproj" />
   </ItemGroup>
