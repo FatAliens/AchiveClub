@@ -15,5 +15,9 @@
     <ProjectReference Include="..\Shared\AchiveClub.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\App_Data\" />
+  </ItemGroup>
+
 
 </Project>
