@@ -19,31 +19,31 @@ namespace AchiveClub.Server.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet]
-        public IEnumerable<User> Get()
+        [HttpGet("{adminKey}")]
+        public IEnumerable<User> Get(string adminKey)
         {
             return _dbContext.Db.GetCollection<User>("Users").FindAll();
         }
 
-        [HttpGet("{email}")]
-        public User Get(string email)
+        [HttpGet("{email}&{adminKey}")]
+        public User Get(string email, string adminKey)
         {
             return _dbContext.Db.GetCollection<User>("Users").FindOne(u=>u.Email==email);
         }
 
-        [HttpPost]
+        [HttpPost("{adminKey}")]
         public int Post(User user)
         {
             return _dbContext.Db.GetCollection<User>("Users").Insert(user);
         }
 
-        [HttpPut]
+        [HttpPut("{adminKey}")]
         public bool Put(User user)
         {
             return _dbContext.Db.GetCollection<User>("Users").Update(user);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}&{adminKey}")]
         public bool Delete(int id)
         {
             return _dbContext.Db.GetCollection<User>("Users").Delete(id);

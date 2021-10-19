@@ -23,12 +23,12 @@ namespace AchiveClub.Client
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services
-      .AddBlazorise(options =>
-      {
-          options.ChangeTextOnKeyPress = true;
-      })
-      .AddBootstrapProviders()
-      .AddFontAwesomeIcons();
+            .AddBlazorise(options =>
+            {
+                options.ChangeTextOnKeyPress = true;
+            })
+            .AddBootstrapProviders()
+            .AddFontAwesomeIcons();
 
             await builder.Build().RunAsync();
         }

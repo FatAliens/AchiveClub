@@ -159,8 +159,13 @@
         }
     </Column>
 </Row>
+<Row>
+    <Button Clicked="AddAdmin" Block Color="Color.Success">Add admin</Button>
+</Row>
 
 @code {
+
+
     private bool userEditVisible = false;
     private User editableUser = new User();
 
@@ -232,5 +237,10 @@
     {
         var responce = await Http.DeleteAsync($"api/Achivements/{achiveId}");
         await UpdateAchivements();
+    }
+
+    private void AddAdmin()
+    {
+
     }
 }
