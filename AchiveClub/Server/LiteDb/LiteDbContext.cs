@@ -11,9 +11,9 @@ namespace AchiveClub.Server
     {
         public LiteDatabase Db { get; set; }
 
-        public LiteDbContext(IOptions<LiteDbOptions> options)
+        public LiteDbContext(string databaseLocation)
         {
-            Db = new LiteDatabase(options.Value.DatabaseLocation);
+            Db = new LiteDatabase(databaseLocation);
         }
     }
 }

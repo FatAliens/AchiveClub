@@ -22,30 +22,28 @@ namespace AchiveClub.Server.Controllers
         [HttpGet]
         public IEnumerable<Achive> Get()
         {
+            _logger.LogInformation("Get: AllAchivements");
             return _dbContext.Db.GetCollection<Achive>("Achivements").FindAll();
-        }
-
-        [HttpGet(template:"{id}")]
-        public Achive Get(int id)
-        {
-            return _dbContext.Db.GetCollection<Achive>("Achivements").FindOne(a=>a.Id==id);
         }
 
         [HttpPost]
         public int Post(Achive achive)
         {
+            _logger.LogInformation("Post: Achivements");
             return _dbContext.Db.GetCollection<Achive>("Achivements").Insert(achive);
         }
 
         [HttpPut]
         public bool Put(Achive achive)
         {
+            _logger.LogInformation("Put: Achivements");
             return _dbContext.Db.GetCollection<Achive>("Achivements").Update(achive);
         }
 
         [HttpDelete("{id}")]
         public bool Delete(int id)
         {
+            _logger.LogInformation("Delete: Achivements");
             return _dbContext.Db.GetCollection<Achive>("Achivements").Delete(id);
         }
     }

@@ -2,7 +2,7 @@
 
 namespace AchiveClub.Shared.Models
 {
-    class Admin
+    public class Admin
     {
         [BsonId]
         public int Id { get; set; }

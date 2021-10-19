@@ -2,10 +2,22 @@
 @using AchiveClub.Shared.Models
 @inject HttpClient Http
 
+<Modal Closing="OnModalClosing" @ref="loginModal">
+    <ModalContent Centered>
+        <ModalTitle Padding="Padding.Is3">Введите ключ администратора</ModalTitle>
+        <ModalBody>
+            <TextEdit Placeholder="ключ администратора" @bind-Text="adminKey" />
+        </ModalBody>
+        <ModalFooter>
+            <Button Block Color="Color.Success" Clicked="() => Login(adminKey)">Подтвердить</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 <Modal @bind-Visible="userEditVisible">
     <ModalContent Centered>
         <ModalHeader>
-            <ModalTitle>Edit Modal</ModalTitle>
+            <ModalTitle>Edit User</ModalTitle>
             <CloseButton />
         </ModalHeader>
         <ModalBody>
@@ -22,7 +34,7 @@
             </Form>
         </ModalBody>
         <ModalFooter>
-            <Button Block Color="Color.Success" Clicked="()=>UpdateUser(editableUser)">Save</Button>
+            <Button Block Color="Color.Success" Clicked="()=>PutUserAsync(editableUser)">Save</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
@@ -42,19 +54,37 @@
             </Form>
         </ModalBody>
         <ModalFooter>
-            <Button Block Color="Color.Success" Clicked="()=>UpdateAchiveAsync(editableAchive)">Save</Button>
+            <Button Block Color="Color.Success" Clicked="()=>PutAchiveAsync(editableAchive)">Save</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Modal @bind-Visible="adminEditVisible">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Edit Admin</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <TextEdit Placeholder="Title" @bind-Text="@editableAdmin.Name" />
+                <TextEdit Placeholder="Title" @bind-Text="@editableAdmin.Key" />
+            </Form>
+        </ModalBody>
+        <ModalFooter>
+            <Button Block Color="Color.Success" Clicked="()=>PutAdminAsync(editableAdmin)">Save</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
 
 <Row>
     <Column>
-        <Heading>Users</Heading>
+        <Heading>Пользователи</Heading>
     </Column>
 </Row>
 <Row>
     <Column>
-        <Button Clicked="AddUser" Block Color="Color.Success">Add User</Button>
+        <Button Clicked="AddUserAsync" Block Color="Color.Success">Добавить пользователя</Button>
     </Column>
 </Row>
 <Row>
@@ -62,7 +92,7 @@
         @if (users == null)
         {
             <Alert Color="Color.Info" Visible>
-                <AlertMessage>Loading...</AlertMessage>
+                <AlertMessage>Загрузка...</AlertMessage>
             </Alert>
         }
         else if (!users.Any())
@@ -91,7 +121,7 @@
                             <TableRowCell>@user.Email</TableRowCell>
                             <TableRowCell>@user.Password</TableRowCell>
                             <TableRowCell>
-                                <Button Color="Color.Primary" Clicked="()=>EditUser(user)" Block>Edit</Button>
+                                <Button Color="Color.Primary" Clicked="()=>EditUserAsync(user)" Block>Edit</Button>
                             </TableRowCell>
                             <TableRowCell>
                                 <Button Color="Color.Danger" Clicked="()=>DeleteUserAsync(user.Id)" Block>Delete</Button>
@@ -105,12 +135,12 @@
 </Row>
 <Row>
     <Column>
-        <Heading>Achivements</Heading>
+        <Heading>Достижения</Heading>
     </Column>
 </Row>
 <Row>
     <Column>
-        <Button Clicked="AddAchiveAsync" Block Color="Color.Success">Add User</Button>
+        <Button Clicked="AddAchiveAsync" Block Color="Color.Success">Добавить задачу</Button>
     </Column>
 </Row>
 <Row>
@@ -118,7 +148,7 @@
         @if (achivements == null)
         {
             <Alert Color="Color.Info" Visible>
-                <AlertMessage>Loading...</AlertMessage>
+                <AlertMessage>Загрузка...</AlertMessage>
             </Alert>
         }
         else if (!achivements.Any())
@@ -147,7 +177,7 @@
                             <TableRowCell>@achive.Description</TableRowCell>
                             <TableRowCell>@achive.LogoURL</TableRowCell>
                             <TableRowCell>
-                                <Button Color="Color.Primary" Clicked="()=>EditAchive(achive)" Block>Edit</Button>
+                                <Button Color="Color.Primary" Clicked="()=>EditAchiveAsync(achive)" Block>Edit</Button>
                             </TableRowCell>
                             <TableRowCell>
                                 <Button Color="Color.Danger" Clicked="()=>DeleteAchiveAsync(achive.Id)" Block>Delete</Button>
@@ -160,11 +190,62 @@
     </Column>
 </Row>
 <Row>
-    <Button Clicked="AddAdmin" Block Color="Color.Success">Add admin</Button>
+    <Column>
+        <Heading>Администраторы</Heading>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Button Clicked="AddAdminAsync" Block Color="Color.Success">Добавить админа</Button>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        @if (admins == null)
+        {
+            <Alert Color="Color.Info" Visible>
+                <AlertMessage>Загрузка...</AlertMessage>
+            </Alert>
+        }
+        else if (!admins.Any())
+        {
+            <Alert Color="Color.Info" Visible>
+                <AlertMessage>Список админов пуст...</AlertMessage>
+            </Alert>
+        }
+        else
+        {
+            <Table>
+                <TableHeader>
+                    <TableHeaderCell>Id</TableHeaderCell>
+                    <TableHeaderCell>Name</TableHeaderCell>
+                    <TableHeaderCell>Key</TableHeaderCell>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var admin in admins)
+                    {
+                        <TableRow>
+                            <TableRowCell>@admin.Id</TableRowCell>
+                            <TableRowCell>@admin.Name</TableRowCell>
+                            <TableRowCell>@admin.Key</TableRowCell>
+                            <TableRowCell>
+                                <Button Color="Color.Primary" Clicked="()=>EditAdminAsync(admin)" Block>Edit</Button>
+                            </TableRowCell>
+                            <TableRowCell>
+                                <Button Color="Color.Danger" Clicked="()=>DeleteAdminAsync(admin.Id)" Block>Delete</Button>
+                            </TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        }
+    </Column>
 </Row>
 
-@code {
 
+@code {
+    private string adminKey = "";
+    private Modal loginModal;
 
     private bool userEditVisible = false;
     private User editableUser = new User();
@@ -172,75 +253,145 @@
     private bool achiveEditVisible = false;
     private Achive editableAchive = new Achive();
 
+    private bool adminEditVisible = false;
+    private Admin editableAdmin = new Admin();
+
     private User[] users;
     private Achive[] achivements;
+    private Admin[] admins;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnAfterRender(bool firstRender)
     {
-        await UpdateUsers();
-        await UpdateAchivements();
+        if (firstRender)
+        {
+            loginModal.Show();
+        }
     }
 
-    private async Task UpdateUsers()
+    private async void Login(string key)
+    {
+        if (await Http.GetFromJsonAsync<bool>("api/Admins/" + key))
+        {
+            await loginModal.Close(CloseReason.UserClosing);
+            await ShowData();
+        }
+    }
+
+    private void OnModalClosing(ModalClosingEventArgs e)
+    {
+        if (e.CloseReason != CloseReason.UserClosing)
+        {
+            e.Cancel = true;
+        }
+    }
+
+    private async Task ShowData()
+    {
+        await UpdateUsersAsync();
+        await UpdateAchivementsAsync();
+        await UpdateAdminsAsync();
+        StateHasChanged();
+    }
+
+    private async Task UpdateUsersAsync()
     {
         users = await Http.GetFromJsonAsync<User[]>("api/Users");
     }
 
-    private async Task UpdateAchivements()
+    private async Task UpdateAchivementsAsync()
     {
         achivements = await Http.GetFromJsonAsync<Achive[]>("api/Achivements");
     }
 
-    private async Task AddUser()
+    private async Task UpdateAdminsAsync()
     {
-        await Http.PostAsJsonAsync<User>("api/Users", new User() { FirstName = "Name", LastName = "Name1", Email = "Email", Password = "Password", CompletedAchivements = null });
-        await UpdateUsers();
+        admins = await Http.GetFromJsonAsync<Admin[]>("api/Admins");
     }
 
-    private void EditUser(User user)
+    #region User Crud
+
+    private async Task AddUserAsync()
+    {
+        await Http.PostAsJsonAsync<User>("api/Users", new User() { FirstName = "Name", LastName = "Name1", Email = "Email", Password = "Password", CompletedAchivements = null });
+        await UpdateUsersAsync();
+    }
+
+    private void EditUserAsync(User user)
     {
         editableUser = user;
         userEditVisible = true;
     }
 
-    private async Task UpdateUser(User user)
+    private async Task PutUserAsync(User user)
     {
         await Http.PutAsJsonAsync<User>("api/Users", user);
-        await UpdateUsers();
+        await UpdateUsersAsync();
+        userEditVisible = false;
     }
 
     private async Task DeleteUserAsync(int userId)
     {
         var responce = await Http.DeleteAsync($"api/Users/{userId}");
-        await UpdateUsers();
+        await UpdateUsersAsync();
     }
+
+    #endregion User Crud
+
+    #region Achive Crud
 
     private async Task AddAchiveAsync()
     {
         await Http.PostAsJsonAsync<Achive>("api/Achivements", new Achive() { Title = "Title", Description = "Desc", Xp = 0, LogoURL = "nologo" });
-        await UpdateAchivements();
+        await UpdateAchivementsAsync();
     }
 
-    private void EditAchive(Achive achive)
+    private void EditAchiveAsync(Achive achive)
     {
         editableAchive = achive;
         achiveEditVisible = true;
     }
 
-    private async Task UpdateAchiveAsync(Achive achive)
+    private async Task PutAchiveAsync(Achive achive)
     {
         await Http.PutAsJsonAsync<Achive>("api/Achivements", achive);
-        await UpdateAchivements();
+        await UpdateAchivementsAsync();
+        achiveEditVisible = false;
     }
 
     private async Task DeleteAchiveAsync(int achiveId)
     {
         var responce = await Http.DeleteAsync($"api/Achivements/{achiveId}");
-        await UpdateAchivements();
+        await UpdateAchivementsAsync();
     }
 
-    private void AddAdmin()
+    #endregion Achive Crud
+
+    #region Admin Crud
+
+    private async Task AddAdminAsync()
     {
-
+        await Http.PostAsJsonAsync<Admin>("api/Admins", new Admin() { Name = "Admin", Key = "Admin" });
+        await UpdateAdminsAsync();
     }
+
+    private void EditAdminAsync(Admin admin)
+    {
+        editableAdmin = admin;
+        adminEditVisible = true;
+    }
+
+    private async Task PutAdminAsync(Admin admin)
+    {
+        await Http.PutAsJsonAsync<Admin>("api/Admins", admin);
+        await UpdateAdminsAsync();
+        adminEditVisible = false;
+    }
+
+    private async Task DeleteAdminAsync(int adminId)
+    {
+        var responce = await Http.DeleteAsync($"api/Admins/{adminId}");
+        await UpdateAdminsAsync();
+    }
+
+    #endregion Admin Crud
 }

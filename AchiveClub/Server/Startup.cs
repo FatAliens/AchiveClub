@@ -23,10 +23,10 @@ namespace AchiveClub.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<LiteDbOptions>(Configuration.GetSection("LiteDbOptions"));
+            string connectionString = "Filename=wwwroot/App_Data/LiteDbTest.db";
+            services.AddSingleton<LiteDbContext>(x=>new LiteDbContext(connectionString));
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddSingleton<LiteDbContext>();
             services.AddSwaggerGen();
         }
 

@@ -1,5 +1,51 @@
 ﻿@page "/"
+@using AchiveClub.Shared.Models
+@inject HttpClient Http
 
-<Heading>
-    Main Program
-</Heading>
+<Modal Closing="OnModalClosing" @ref="loginModal">
+    <ModalContent Centered>
+        <ModalTitle Padding="Padding.Is3">Введите ключ администратора</ModalTitle>
+        <ModalBody>
+            <Field>
+                <FieldLabel>
+                    Email
+                </FieldLabel>
+                <FieldBody>
+                    <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Email" Role="TextRole.Email" />
+                </FieldBody>
+            </Field>
+            <Field>
+                <FieldLabel>
+                    Пароль
+                </FieldLabel>
+                <FieldBody>
+                    <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Password" Role="TextRole.Password" />
+                </FieldBody>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Block Color="Color.Success" Clicked="() => Login(adminKey)">Подтвердить</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code
+{
+    private string adminKey = "";
+    private Modal loginModal;
+
+    private LoginParams loginParams;
+
+    private void OnModalClosing(ModalClosingEventArgs e)
+    {
+        if (e.CloseReason != CloseReason.UserClosing)
+        {
+            e.Cancel = true;
+        }
+    }
+
+    private async void Login(string key)
+    {
+
+    }
+}
