@@ -13,5 +13,10 @@ namespace AchiveClub.Shared.Models
         public string Password { get; set; }
         [BsonRef("Achivements")]
         public List<Achive> CompletedAchivements { get; set; }
+
+        public User()
+        {
+            CompletedAchivements = new List<Achive>();
+        }
     }
 }

@@ -4,37 +4,80 @@
 
 <Modal Closing="OnModalClosing" @ref="loginModal">
     <ModalContent Centered>
-        <ModalTitle Padding="Padding.Is3">Введите ключ администратора</ModalTitle>
+        <ModalTitle Padding="Padding.Is3">Введите свои учетные данные</ModalTitle>
         <ModalBody>
             <Field>
                 <FieldLabel>
                     Email
                 </FieldLabel>
-                <FieldBody>
-                    <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Email" Role="TextRole.Email" />
-                </FieldBody>
+                <TextEdit Placeholder="Email" @bind-Text="loginParams.Email" Role="TextRole.Email" />
             </Field>
             <Field>
                 <FieldLabel>
                     Пароль
                 </FieldLabel>
-                <FieldBody>
-                    <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Password" Role="TextRole.Password" />
-                </FieldBody>
+                <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Password" Role="TextRole.Password" />
             </Field>
         </ModalBody>
         <ModalFooter>
-            <Button Block Color="Color.Success" Clicked="() => Login(adminKey)">Подтвердить</Button>
+            <Button Block Color="Color.Success" Clicked="()=>Login(loginParams)">Подтвердить</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
+<Container>
+    @if (user != null)
+    {
+        <Row>
+            <Column><Text>User:</Text></Column>
+            <Column><Text>@user.FirstName</Text></Column>
+            <Column><Text>@user.LastName</Text></Column>
+            <Column><Text>@user.Email</Text></Column>
+        </Row>
+        <Row>
+            @if (!achivementsWithCompletedState.Any())
+            {
+                <Alert Color="Color.Warning">Список достижений пуст!</Alert>
+            }
+            else
+            {
+                <ListGroup>
+                    @foreach (var achive in achivementsWithCompletedState)
+                    {
+                        <ListGroupItem>
+                            <Text>@achive.Key.Title</Text>
+                            <Text>@achive.Key.Description</Text>
+                            <Check TValue="bool" Disabled="true" Checked="@achive.Value" />
+                        </ListGroupItem>
+                    }
+                </ListGroup>
+            }
+        </Row>
+    }
+    else
+    {
+        <Row>
+            <Heading>Loading...</Heading>
+        </Row>
+    }
+</Container>
+
 
 @code
 {
     private string adminKey = "";
     private Modal loginModal;
 
-    private LoginParams loginParams;
+    private LoginParams loginParams = new LoginParams();
+    private User user = new User();
+    private Dictionary<Achive, bool> achivementsWithCompletedState = new Dictionary<Achive, bool>();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            loginModal.Show();
+        }
+    }
 
     private void OnModalClosing(ModalClosingEventArgs e)
     {
@@ -44,8 +87,26 @@
         }
     }
 
-    private async void Login(string key)
+    private async Task Login(LoginParams loginParams)
     {
+        var result = await Http.PostAsJsonAsync<LoginParams>("api/Auth", loginParams);
+        var user = await result.Content.ReadFromJsonAsync<User>();
+        var achivements = await Http.GetFromJsonAsync<Achive[]>("api/Achivements");
 
+        foreach (var achive in achivements)
+        {
+            if (user.CompletedAchivements.Find(a => a.Id == achive.Id) != null)
+            {
+                achivementsWithCompletedState.Add(achive, true);
+            }
+            else
+            {
+                achivementsWithCompletedState.Add(achive, false);
+            }
+        }
+
+        await loginModal.Close(CloseReason.UserClosing);
+
+        StateHasChanged();
     }
 }
