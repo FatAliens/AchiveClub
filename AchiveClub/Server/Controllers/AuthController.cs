@@ -17,7 +17,7 @@ namespace AchiveClub.Server.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpPost(Name = "Login")]
+        [HttpPost("login",Name = "Login")]
         public ActionResult<User> Login(LoginParams loginParams)
         {
             _logger.LogInformation("Put: Login User");
@@ -31,7 +31,7 @@ namespace AchiveClub.Server.Controllers
                 return new BadRequestResult();
             }
         }
-        /*[HttpPost(Name = "Register")]
+        [HttpPost("register", Name = "Register")]
         public ActionResult<User> Register(RegisterParams registerParams)
         {
             _logger.LogInformation("Put: Register User");
@@ -52,6 +52,6 @@ namespace AchiveClub.Server.Controllers
             {
                 return new BadRequestResult();
             }
-        }*/
+        }
     }
 }

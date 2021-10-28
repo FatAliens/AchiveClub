@@ -24,33 +24,94 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-<Container>
+
+<Modal Closing="OnModalClosing" @ref="confirmModal">
+    <ModalContent Centered>
+        <ModalTitle Padding="Padding.Is3">Введите свои учетные данные</ModalTitle>
+        <ModalBody>
+            <Field>
+                <FieldLabel>
+                    Email
+                </FieldLabel>
+                <TextEdit Placeholder="Email" @bind-Text="loginParams.Email" Role="TextRole.Email" />
+            </Field>
+            <Field>
+                <FieldLabel>
+                    Пароль
+                </FieldLabel>
+                <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Password" Role="TextRole.Password" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Block Color="Color.Success" Clicked="()=>Login(loginParams)">Подтвердить</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Container Fluid>
     @if (user != null)
     {
         <Row>
-            <Column><Text>User:</Text></Column>
-            <Column><Text>@user.FirstName</Text></Column>
-            <Column><Text>@user.LastName</Text></Column>
-            <Column><Text>@user.Email</Text></Column>
+            <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
+                <Jumbotron>
+                    <JumbotronTitle Size="JumbotronTitleSize.Is4">
+                        Привет @user.FirstName @user.LastName!
+                    </JumbotronTitle>
+                    <JumbotronSubtitle>
+                        Ваш Email: @user.Email
+                    </JumbotronSubtitle>
+                    <Divider DividerType="DividerType.Solid" />
+                    <Paragraph>Это пользовательская часть приложения AchiveClub пока что находиться в разработке и использует тестовый интерфейс.</Paragraph>
+                </Jumbotron>
+            </Column>
         </Row>
         <Row>
-            @if (!achivementsWithCompletedState.Any())
-            {
-                <Alert Color="Color.Warning">Список достижений пуст!</Alert>
-            }
-            else
-            {
-                <ListGroup>
-                    @foreach (var achive in achivementsWithCompletedState)
-                    {
-                        <ListGroupItem>
-                            <Text>@achive.Key.Title</Text>
-                            <Text>@achive.Key.Description</Text>
-                            <Check TValue="bool" Disabled="true" Checked="@achive.Value" />
-                        </ListGroupItem>
-                    }
-                </ListGroup>
-            }
+            <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
+                <Divider DividerType="DividerType.TextContent" Text="Достижения" Flex="Flex.Fill" />
+            </Column>
+        </Row>
+        <Row>
+            <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
+                @if (!achivementsWithCompletedState.Any())
+                {
+                    <Alert Color="Color.Warning">Список достижений пуст!</Alert>
+                }
+                else
+                {
+                    <ListGroup Flex="Flex.Fill">
+                        @foreach (var achive in achivementsWithCompletedState)
+                        {
+                            <ListGroupItem>
+                                <Card Margin="Margin.Is4.FromBottom">
+                                    <CardHeader Flex="Flex.JustifyContent.Between">
+                                        <Div Flex="Flex.JustifyContent.Start">
+                                            <Figure>
+                                                <FigureImage Source="48x48.png" />
+                                            </Figure>
+                                            <CardTitle Size="2">
+                                                @achive.Key.Title
+                                            </CardTitle>
+                                        </Div>
+                                        @if (achive.Value)
+                                        {
+                                            <Div Flex="Flex.JustifyContent.End">
+                                                <Badge Color="Color.Success" Flex="Flex.AlignItems.Center">Выполнено</Badge>
+                                            </Div>
+                                        }
+                                    </CardHeader>
+                                    <CardBody Flex="Flex.JustifyContent.Between">
+                                        @achive.Key.Description
+                                        @if (!achive.Value)
+                                        {
+                                            <Button Color="Color.Primary">Выполнить!</Button>
+                                        }
+                                    </CardBody>
+                                </Card>
+                            </ListGroupItem>
+                        }
+                    </ListGroup>
+                }
+            </Column>
         </Row>
     }
     else
@@ -66,8 +127,10 @@
 {
     private string adminKey = "";
     private Modal loginModal;
+    private Modal confirmModal;
 
     private LoginParams loginParams = new LoginParams();
+
     private User user = new User();
     private Dictionary<Achive, bool> achivementsWithCompletedState = new Dictionary<Achive, bool>();
 
@@ -89,8 +152,8 @@
 
     private async Task Login(LoginParams loginParams)
     {
-        var result = await Http.PostAsJsonAsync<LoginParams>("api/Auth", loginParams);
-        var user = await result.Content.ReadFromJsonAsync<User>();
+        var result = await Http.PostAsJsonAsync<LoginParams>("api/Auth/login", loginParams);
+        user = await result.Content.ReadFromJsonAsync<User>();
         var achivements = await Http.GetFromJsonAsync<Achive[]>("api/Achivements");
 
         foreach (var achive in achivements)
