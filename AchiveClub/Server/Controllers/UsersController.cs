@@ -41,28 +41,20 @@ namespace AchiveClub.Server.Controllers
             return _dbContext.Db.GetCollection<User>("Users").Insert(user);
         }
 
-        [HttpPut]
-        public bool Put(User user)
+        [HttpPut("{adminKey}", Name = "UpdateUser")]
+        public ActionResult Put(User user, string adminKey)
         {
             _logger.LogInformation("Put: Users");
-            return _dbContext.Db.GetCollection<User>("Users").Update(user);
-        }
-
-        [HttpPut("{userId}&{achiveId}&{adminKey}" ,Name = "AddCompletedAchiveToUser")]
-        public bool Put(int userId, int achiveId, string adminKey)
-        {
-            _logger.LogInformation("Put: AddCompletedAchiveToUser");
-            User user = _dbContext.Db.GetCollection<User>("Users").FindById(userId);
-            Achive achive = _dbContext.Db.GetCollection<Achive>("Achivements").FindById(achiveId);
-            if(user.CompletedAchivements.Count(a=>a.Id==achive.Id)==0)
+            if (_dbContext.Db.GetCollection<Admin>("Admins").FindOne(a => a.Key == adminKey) != null)
             {
-                user.CompletedAchivements.Add(achive);
+                _logger.LogInformation("Put: Admin Key Valid!");
+                return _dbContext.Db.GetCollection<User>("Users").Update(user) ? new OkResult() : new BadRequestResult();
             }
             else
             {
-                return false;
+                _logger.LogInformation("Put: Admin Key invalid!");
+                return new BadRequestResult();
             }
-            return _dbContext.Db.GetCollection<User>("Users").Update(user);
         }
 
         [HttpDelete("{id}")]
