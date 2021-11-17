@@ -21,7 +21,7 @@
         </ModalBody>
         <ModalFooter>
             <Button Block Color="Color.Success" Clicked="Login">Войти</Button>
-            <Divider DividerType="DividerType.Solid"/>
+            <Divider DividerType="DividerType.Solid" />
             <Button TextColor="TextColor.Black50">Регистрация</Button>
         </ModalFooter>
     </ModalContent>
@@ -30,7 +30,7 @@
 <Modal Closing="OnModalClosing" @ref="confirmModal">
     <ModalContent Centered>
 
-        <ModalTitle Padding="Padding.Is3" Flex="Flex.JustifyContent.Between">
+        <ModalTitle Padding="Padding.Is2.FromTop.Is3.FromLeft.Is2.FromRight" Flex="Flex.JustifyContent.Between">
             Введете ключ администратора
             <CloseButton />
         </ModalTitle>
@@ -81,28 +81,28 @@
                             {
                                 <ListGroupItem>
                                     <Card Margin="Margin.Is4.FromBottom">
-                                        <CardHeader Flex="Flex.JustifyContent.Between">
+                                        <CardHeader Flex="Flex.JustifyContent.Between.AlignItems.Center">
                                             <Div Flex="Flex.JustifyContent.Start">
-                                                <Figure>
+                                                <Figure Padding="Padding.Is2">
                                                     <FigureImage Source="48x48.png" />
                                                 </Figure>
                                                 <CardTitle Size="2">
                                                     @achive.Key.Title
                                                 </CardTitle>
                                             </Div>
-                                            @if (achive.Value)
-                                            {
-                                                <Div Flex="Flex.JustifyContent.End">
-                                                    <Badge Color="Color.Success" Flex="Flex.AlignItems.Center">Выполнено</Badge>
-                                                </Div>
-                                            }
+                                            <Div Flex="Flex.JustifyContent.End">
+                                                @if (achive.Value)
+                                                {
+                                                    <Badge Color="Color.Success">Выполнено</Badge>
+                                                }
+                                                else
+                                                {
+                                                    <Button Color="Color.Primary" Clicked="()=>ShowConfirmModal(achive.Key)">Выполнить!</Button>
+                                                }
+                                            </Div>
                                         </CardHeader>
-                                        <CardBody Flex="Flex.JustifyContent.Between">
+                                        <CardBody>
                                             @achive.Key.Description
-                                            @if (!achive.Value)
-                                            {
-                                                <Button Color="Color.Primary" Clicked="()=>ShowConfirmModal(achive.Key)">Выполнить!</Button>
-                                            }
                                         </CardBody>
                                     </Card>
                                 </ListGroupItem>
@@ -137,6 +137,10 @@
         if (firstRender)
         {
             loginModal.Show();
+            loginParams.Email = "hello.world@gmail.com";
+            loginParams.Password = "1234";
+            InvokeAsync(() => Login());
+
         }
     }
 

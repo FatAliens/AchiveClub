@@ -1,17 +1,28 @@
-﻿using LiteDB;
+﻿
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AchiveClub.Shared.Models
 {
     public class Achive
     {
-        [BsonId]
+        [Key]
         public int Id { get; set; }
+
+        [Required]
         public int Xp { get; set; }
+
+        [Required]
         public string Title { get; set; }
+
+        [Required]
         public string Description { get; set; }
+
+        [Required]
         public string LogoURL { get; set; }
 
-        [BsonIgnore]
+        [NotMapped]
         public string XpString
         {
             get => Xp.ToString();
@@ -28,6 +39,20 @@ namespace AchiveClub.Shared.Models
                     Xp = result;
                 }
             }
+        }
+
+        public List<CompletedAchive> CompletedAchivements { get; set; }
+
+        public Achive()
+        {
+            CompletedAchivements = new List<CompletedAchive>();
+        }
+
+        public override string ToString()
+        {
+            return $"[{Xp} Xp] {Title}\n" +
+                $"{Description}\n" +
+                $"Achivement Logo: [{LogoURL}]";
         }
     }
 }
