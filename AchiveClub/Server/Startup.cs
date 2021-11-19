@@ -25,7 +25,7 @@ namespace AchiveClub.Server
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            // добавляем контекст MobileContext в качестве сервиса в приложение
+            
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
 

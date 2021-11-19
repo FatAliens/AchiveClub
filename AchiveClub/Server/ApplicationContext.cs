@@ -43,9 +43,4 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Admin>().HasData(adminFaker.Generate(5));
         modelBuilder.Entity<Achive>().HasData(achiveFaker.Generate(40));
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
-    }
 }
