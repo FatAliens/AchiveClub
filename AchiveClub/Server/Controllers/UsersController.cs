@@ -11,57 +11,66 @@ namespace AchiveClub.Server.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
-        private LiteDbContext _dbContext;
 
-        public UsersController(ILogger<UsersController> logger, LiteDbContext dbContext)
+        private readonly ILogger<UsersController> _logger;
+        private ApplicationContext _dbContext;
+
+        public UsersController(ILogger<UsersController> logger, ApplicationContext dbContext)
         {
             _logger = logger;
             _dbContext = dbContext;
         }
 
-        [HttpGet("userId" , Name = "GetOne")]
-        public User GetOne(int userId)
-        {
-            _logger.LogInformation("Get: AllUsers");
-            return _dbContext.Db.GetCollection<User>("Users").Include(u => u.CompletedAchivements).FindById(userId);
-        }
-
         [HttpGet(Name = "GetAll")]
         public IEnumerable<User> GetAll()
         {
-            _logger.LogInformation("Get: AllUsers");
-            return _dbContext.Db.GetCollection<User>("Users").Include(u=>u.CompletedAchivements).FindAll();
+            return _dbContext.Users.ToList();
         }
 
         [HttpPost]
-        public int Post(User user)
+        public ActionResult Post(User user)
         {
-            _logger.LogInformation("Post: Users");
-            return _dbContext.Db.GetCollection<User>("Users").Insert(user);
+            try
+            {
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
         }
 
-        [HttpPut("{adminKey}", Name = "UpdateUser")]
-        public ActionResult Put(User user, string adminKey)
+        [HttpPut]
+        public ActionResult Put(User user)
         {
-            _logger.LogInformation("Put: Users");
-            if (_dbContext.Db.GetCollection<Admin>("Admins").FindOne(a => a.Key == adminKey) != null)
+            try
             {
-                _logger.LogInformation("Put: Admin Key Valid!");
-                return _dbContext.Db.GetCollection<User>("Users").Update(user) ? new OkResult() : new BadRequestResult();
+                _dbContext.Users.Update(user);
+                _dbContext.SaveChanges();
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogInformation("Put: Admin Key invalid!");
-                return new BadRequestResult();
+                return BadRequest(ex);
             }
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public bool Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _logger.LogInformation("Delete: Users");
-            return _dbContext.Db.GetCollection<User>("Users").Delete(id);
+            try
+            {
+                _dbContext.Users.Remove(_dbContext.Users.Where(u => u.Id == id).First());
+                _dbContext.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
         }
     }
 }

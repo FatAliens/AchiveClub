@@ -38,7 +38,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex);
             }
-            return new OkResult();
+            return Ok();
         }
 
         [HttpPut]
@@ -53,7 +53,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex);
             }
-            return new OkResult();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -61,7 +61,7 @@ namespace AchiveClub.Server.Controllers
         {
             try
             {
-                _dbContext.Achivements.Remove(_dbContext.Achivements.Where(u=>u.Id==id).First());
+                _dbContext.Achivements.Remove(_dbContext.Achivements.Where(u => u.Id == id).First());
                 _dbContext.SaveChanges();
             }
 
@@ -69,7 +69,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex);
             }
-            return new OkResult();
+            return Ok();
         }
     }
 }

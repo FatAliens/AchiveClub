@@ -20,20 +20,6 @@ namespace AchiveClub.Server.Controllers
             _dbContext = dbContext;
         }
 
-
-        [HttpGet("{key}", Name = "ConfirmKey")]
-        public bool Get(string key)
-        {
-            if (_dbContext.Admins.Where(a => a.Key == key).Any())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         [HttpGet]
         public IEnumerable<Admin> Get()
         {
@@ -52,7 +38,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex);
             }
-            return new OkResult();
+            return Ok();
         }
 
         [HttpPut]
@@ -67,7 +53,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex);
             }
-            return new OkResult();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -83,7 +69,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex);
             }
-            return new OkResult();
+            return Ok();
         }
     }
 }

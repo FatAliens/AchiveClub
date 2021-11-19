@@ -166,18 +166,7 @@
 
     private async Task ConfirmAchive()
     {
-        user.CompletedAchivements.Add(currentAchive);
-        var result = await Http.PutAsJsonAsync<User>($"api/Users/{adminKey}", user);
-        adminKey = "";
-        if (result.IsSuccessStatusCode)
-        {
-            achivementsWithCompletedState[currentAchive] = true;
-            await confirmModal.Close(CloseReason.UserClosing);
-        }
-        else
-        {
-            user.CompletedAchivements.Remove(currentAchive);
-        }
+        
     }
 
     private void ShowConfirmModal(Achive completeAchive)
