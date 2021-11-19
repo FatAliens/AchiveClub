@@ -3,6 +3,7 @@ using AchiveClub.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -11,47 +12,78 @@ namespace AchiveClub.Server.Controllers
     public class AdminsController : ControllerBase
     {
         private readonly ILogger<AdminsController> _logger;
-        private LiteDbContext _dbContext;
+        private ApplicationContext _dbContext;
 
-        public AdminsController(ILogger<AdminsController> logger, LiteDbContext dbContext)
+        public AdminsController(ILogger<AdminsController> logger, ApplicationContext dbContext)
         {
             _logger = logger;
             _dbContext = dbContext;
         }
 
+
+        [HttpGet("{key}", Name = "ConfirmKey")]
+        public bool Get(string key)
+        {
+            if (_dbContext.Admins.Where(a => a.Key == key).Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         [HttpGet]
         public IEnumerable<Admin> Get()
         {
-            _logger.LogInformation("Get: AllAdmins");
-            return _dbContext.Db.GetCollection<Admin>("Admins").FindAll();
-        }
-
-        [HttpGet("{key}" ,Name = "ConfirmKey")]
-        public bool Get(string key)
-        {
-            _logger.LogInformation("Get: TryConfirm");
-            return _dbContext.Db.GetCollection<Admin>("Admins").Count(admin => admin.Key == key) > 0;
+            return _dbContext.Admins.ToList();
         }
 
         [HttpPost]
-        public int Post(Admin admin)
+        public ActionResult Post(Admin admin)
         {
-            _logger.LogInformation("Post: Admins");
-            return _dbContext.Db.GetCollection<Admin>("Admins").Insert(admin);
+            try
+            {
+                _dbContext.Admins.Add(admin);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return new OkResult();
         }
 
         [HttpPut]
-        public bool Put(Admin admin)
+        public ActionResult Put(Admin admin)
         {
-            _logger.LogInformation("Put: Admins");
-            return _dbContext.Db.GetCollection<Admin>("Admins").Update(admin);
+            try
+            {
+                _dbContext.Admins.Update(admin);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return new OkResult();
         }
 
         [HttpDelete("{id}")]
-        public bool Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _logger.LogInformation("Delete: Admins");
-            return _dbContext.Db.GetCollection<Admin>("Admins").Delete(id);
+            try
+            {
+                _dbContext.Admins.Remove(_dbContext.Admins.Where(u => u.Id == id).First());
+                _dbContext.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return new OkResult();
         }
     }
 }

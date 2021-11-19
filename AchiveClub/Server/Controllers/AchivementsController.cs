@@ -3,6 +3,7 @@ using AchiveClub.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -10,10 +11,10 @@ namespace AchiveClub.Server.Controllers
     [ApiController]
     public class AchivementsController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
-        private LiteDbContext _dbContext;
+        private readonly ILogger<AchivementsController> _logger;
+        private ApplicationContext _dbContext;
 
-        public AchivementsController(ILogger<UsersController> logger, LiteDbContext dbContext)
+        public AchivementsController(ILogger<AchivementsController> logger, ApplicationContext dbContext)
         {
             _logger = logger;
             _dbContext = dbContext;
@@ -22,29 +23,53 @@ namespace AchiveClub.Server.Controllers
         [HttpGet]
         public IEnumerable<Achive> Get()
         {
-            _logger.LogInformation("Get: AllAchivements");
-            return _dbContext.Db.GetCollection<Achive>("Achivements").FindAll();
+            return _dbContext.Achivements.ToList();
         }
 
         [HttpPost]
-        public int Post(Achive achive)
+        public ActionResult Post(Achive achive)
         {
-            _logger.LogInformation("Post: Achivements");
-            return _dbContext.Db.GetCollection<Achive>("Achivements").Insert(achive);
+            try
+            {
+                _dbContext.Achivements.Add(achive);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return new OkResult();
         }
 
         [HttpPut]
-        public bool Put(Achive achive)
+        public ActionResult Put(Achive achive)
         {
-            _logger.LogInformation("Put: Achivements");
-            return _dbContext.Db.GetCollection<Achive>("Achivements").Update(achive);
+            try
+            {
+                _dbContext.Achivements.Update(achive);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return new OkResult();
         }
 
         [HttpDelete("{id}")]
-        public bool Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _logger.LogInformation("Delete: Achivements");
-            return _dbContext.Db.GetCollection<Achive>("Achivements").Delete(id);
+            try
+            {
+                _dbContext.Achivements.Remove(_dbContext.Achivements.Where(u=>u.Id==id).First());
+                _dbContext.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return new OkResult();
         }
     }
 }

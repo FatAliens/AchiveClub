@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using Swashbuckle;
+using Microsoft.EntityFrameworkCore;
 
 namespace AchiveClub.Server
 {
@@ -23,8 +24,12 @@ namespace AchiveClub.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = "Filename=wwwroot/App_Data/LiteDbTest.db";
-            services.AddSingleton<LiteDbContext>(x=>new LiteDbContext(connectionString));
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            // добавляем контекст MobileContext в качестве сервиса в приложение
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(connection));
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSwaggerGen();
