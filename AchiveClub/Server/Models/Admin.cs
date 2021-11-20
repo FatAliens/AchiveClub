@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AchiveClub.Shared.Models
+namespace AchiveClub.Server.Models
 {
     public class Admin
     {
@@ -15,11 +15,11 @@ namespace AchiveClub.Shared.Models
         [Required]
         public string Key { get; set; }
 
-        public List<CompletedAchive> CompletedAchivements { get; set; }
+        public List<CompletedAchievement> CompletedAchivements { get; set; }
 
         public Admin()
         {
-            CompletedAchivements = new List<CompletedAchive>();
+            CompletedAchivements = new List<CompletedAchievement>();
         }
 
         public override string ToString()

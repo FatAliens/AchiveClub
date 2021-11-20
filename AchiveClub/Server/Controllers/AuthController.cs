@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AchiveClub.Shared.Models;
+using AchiveClub.Server.Models;
+using AchiveClub.Shared.DTO;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -20,19 +23,48 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpPost("login", Name = "Login")]
-        public ActionResult<User> Login(LoginParams loginParams)
+        public ActionResult<CurrentUserInfo> Login(LoginParams loginParams)
         {
             User user;
             try
             {
-                user = _dbContext.Users.Where(u => u.Email == loginParams.Email && u.Password == loginParams.Password).First();
+                user = _dbContext.Users.Where(u => u.Email == loginParams.Email && u.Password == loginParams.Password).Include(u => u.CompletedAchivements).First();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            return user;
+
+            return UserToUserInfo(user);
         }
+
+        public CurrentUserInfo UserToUserInfo(User user)
+        {
+            var achivementsInfo = new List<AchiveInfo>();
+
+            foreach (var achive in _dbContext.Achivements.ToList())
+            {
+                achivementsInfo.Add(new AchiveInfo()
+                {
+                    Id = achive.Id,
+                    Title = achive.Title,
+                    Description = achive.Description,
+                    Xp = achive.Xp,
+                    LogoURL = achive.LogoURL,
+                    Completed = user.CompletedAchivements.Where(a => a.AchiveRefId == achive.Id).Any()
+                });
+            }
+
+            var userInfo = new CurrentUserInfo()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                Achivements = achivementsInfo
+            };
+
+            return userInfo;
+        }
+
         [HttpPost("register", Name = "Register")]
         public ActionResult Register(RegisterParams registerParams)
         {

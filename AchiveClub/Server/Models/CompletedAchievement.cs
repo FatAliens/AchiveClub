@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AchiveClub.Shared.Models
+namespace AchiveClub.Server.Models
 {
-    public class CompletedAchive
+    public class CompletedAchievement
     {
         [Key]
         public int Id { get; set; }
@@ -19,7 +19,7 @@ namespace AchiveClub.Shared.Models
 
         [ForeignKey(nameof(Achive))]
         public int AchiveRefId { get; set; }
-        public Achive Achive { get; set; }
+        public Achievement Achive { get; set; }
 
         [Required]
         public DateTime DateOfCompletion { get; set; }

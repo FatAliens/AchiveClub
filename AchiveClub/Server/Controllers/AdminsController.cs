@@ -1,5 +1,5 @@
 ﻿using System;
-using AchiveClub.Shared.Models;
+using AchiveClub.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;

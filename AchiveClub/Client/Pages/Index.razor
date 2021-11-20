@@ -2,6 +2,7 @@
 @using AchiveClub.Shared.Models
 @inject HttpClient Http
 
+<!-- Модальное окно для входа на страницу -->
 <Modal Closing="OnModalClosing" @ref="loginModal">
     <ModalContent Centered>
         <ModalTitle Padding="Padding.Is3">Введите свои учетные данные</ModalTitle>
@@ -27,6 +28,7 @@
     </ModalContent>
 </Modal>
 
+<!-- Модальное окно для регистрации -->
 <Modal Closing="OnModalClosing" @ref="confirmModal">
     <ModalContent Centered>
 
@@ -45,80 +47,64 @@
 </Modal>
 
 <Container Fluid>
+    <!-- Вошел ли пользователь -->
     @if (user != null)
     {
-        @if (!string.IsNullOrWhiteSpace(user.Email))
-        {
-            <Row>
-                <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
-                    <Jumbotron>
-                        <JumbotronTitle Size="JumbotronTitleSize.Is4">
-                            Привет @user.FirstName @user.LastName!
-                        </JumbotronTitle>
-                        <JumbotronSubtitle>
-                            Ваш Email: @user.Email
-                        </JumbotronSubtitle>
-                        <Divider DividerType="DividerType.Solid" />
-                        <Paragraph>Пользовательская часть приложения AchiveClub пока что находиться в разработке и использует тестовый интерфейс.</Paragraph>
-                    </Jumbotron>
-                </Column>
-            </Row>
-            <Row>
-                <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
-                    <Divider DividerType="DividerType.TextContent" Text="Задачи" Flex="Flex.Fill" />
-                </Column>
-            </Row>
-            <Row>
-                <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
-                    @if (!achivementsWithCompletedState.Any())
-                    {
-                        <Alert Color="Color.Warning">Список достижений пуст!</Alert>
-                    }
-                    else
-                    {
-                        <ListGroup Flex="Flex.Fill">
-                            @foreach (var achive in achivementsWithCompletedState)
-                            {
-                                <ListGroupItem>
-                                    <Card Margin="Margin.Is4.FromBottom">
-                                        <CardHeader Flex="Flex.JustifyContent.Between.AlignItems.Center">
-                                            <Div Flex="Flex.JustifyContent.Start">
-                                                <Figure Padding="Padding.Is2">
-                                                    <FigureImage Source="48x48.png" />
-                                                </Figure>
-                                                <CardTitle Size="2">
-                                                    @achive.Key.Title
-                                                </CardTitle>
-                                            </Div>
-                                            <Div Flex="Flex.JustifyContent.End">
-                                                @if (achive.Value)
-                                                {
-                                                    <Badge Color="Color.Success">Выполнено</Badge>
-                                                }
-                                                else
-                                                {
-                                                    <Button Color="Color.Primary" Clicked="()=>ShowConfirmModal(achive.Key)">Выполнить!</Button>
-                                                }
-                                            </Div>
-                                        </CardHeader>
-                                        <CardBody>
-                                            @achive.Key.Description
-                                        </CardBody>
-                                    </Card>
-                                </ListGroupItem>
-                            }
-                        </ListGroup>
-                    }
-                </Column>
-            </Row>
-        }
+        <!-- Информация о пользователе -->
+        <Row>
+            <h1>Привет @user.FirstName @user.LastName!</h1>
+            <Paragraph>Пользовательская часть приложения AchiveClub пока что находиться в разработке и использует тестовый интерфейс.</Paragraph>
+        </Row>
+        <!-- Список достижений -->
+        <Row>
+            <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
+                @if (!achivementsWithCompletedState.Any())
+                {
+                    <Alert Color="Color.Warning">Список достижений пуст!</Alert>
+                }
+                else
+                {
+                    <ListGroup Flex="Flex.Fill">
+                        @foreach (var achive in achivementsWithCompletedState)
+                        {
+                            <ListGroupItem>
+                                <Card Margin="Margin.Is4.FromBottom">
+                                    <CardHeader>
+                                        <Div Flex="Flex.JustifyContent.Start">
+                                            <Figure Padding="Padding.Is2">
+                                                <FigureImage Source="48x48.png" />
+                                            </Figure>
+                                            <CardTitle Size="2">
+                                                @achive.Key.Title
+                                            </CardTitle>
+                                        </Div>
+                                    </CardHeader>
+                                    <CardBody>
+                                        @achive.Key.Description
+                                    </CardBody>
+                                    <CardActions>
+                                        @if (achive.Value)
+                                        {
+                                            <Badge Color="Color.Success">Выполнено</Badge>
+                                        }
+                                        else
+                                        {
+                                            <Button Color="Color.Primary" Clicked="()=>ShowConfirmModal(achive.Key)">Выполнить!</Button>
+                                        }
+                                    </CardActions>
+                                </Card>
+                            </ListGroupItem>
+                        }
+                    </ListGroup>
+                }
+            </Column>
+        </Row>
     }
     else
     {
         <Heading>Загрузка...</Heading>
     }
 </Container>
-
 
 @code
 {
@@ -129,7 +115,7 @@
     private LoginParams loginParams = new LoginParams();
     private Achive currentAchive = new Achive();
 
-    private User user = new User();
+    private User user;
     private Dictionary<Achive, bool> achivementsWithCompletedState = new Dictionary<Achive, bool>();
 
     protected override void OnAfterRender(bool firstRender)
@@ -137,8 +123,10 @@
         if (firstRender)
         {
             loginModal.Show();
-            loginParams.Email = "hello.world@gmail.com";
-            loginParams.Password = "1234";
+
+            //автоматический вход для теста интерфейса
+            loginParams.Email = "Ivan76@ya.ru";
+            loginParams.Password = "iWjZnf";
             InvokeAsync(() => Login());
 
         }
@@ -166,7 +154,7 @@
 
     private async Task ConfirmAchive()
     {
-        
+
     }
 
     private void ShowConfirmModal(Achive completeAchive)

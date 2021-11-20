@@ -1,4 +1,4 @@
-﻿namespace AchiveClub.Shared.Models
+﻿namespace AchiveClub.Shared.DTO
 {
     public class LoginParams
     {

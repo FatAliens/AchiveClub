@@ -1,5 +1,5 @@
 ﻿using System;
-using AchiveClub.Shared.Models;
+using AchiveClub.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -21,13 +21,13 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Achive> Get()
+        public IEnumerable<Achievement> Get()
         {
             return _dbContext.Achivements.ToList();
         }
 
         [HttpPost]
-        public ActionResult Post(Achive achive)
+        public ActionResult Post(Achievement achive)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpPut]
-        public ActionResult Put(Achive achive)
+        public ActionResult Put(Achievement achive)
         {
             try
             {

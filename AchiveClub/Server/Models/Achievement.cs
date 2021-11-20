@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AchiveClub.Shared.Models
+namespace AchiveClub.Server.Models
 {
-    public class Achive
+    public class Achievement
     {
         [Key]
         public int Id { get; set; }
@@ -41,11 +41,11 @@ namespace AchiveClub.Shared.Models
             }
         }
 
-        public List<CompletedAchive> CompletedAchivements { get; set; }
+        public List<CompletedAchievement> CompletedAchivements { get; set; }
 
-        public Achive()
+        public Achievement()
         {
-            CompletedAchivements = new List<CompletedAchive>();
+            CompletedAchivements = new List<CompletedAchievement>();
         }
 
         public override string ToString()
