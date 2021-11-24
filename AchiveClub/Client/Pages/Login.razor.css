@@ -279,13 +279,15 @@ main {
         font-family: 'Play', sans-serif;
         height: 25px;
         padding: 0;
+        cursor: pointer;
     }
 
-.registerForm a {
+.registerForm p a {
     text-decoration: none;
     color: #8F8F8F;
     font-weight: bold;
     font-size: 14px;
+    cursor: pointer;
 }
 
 @media(max-width:430px) {

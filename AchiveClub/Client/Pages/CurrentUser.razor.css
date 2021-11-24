@@ -217,4 +217,10 @@ footer img {
         width: 100px;
         text-align: right;
     }
+    .completedTask {
+        cursor: pointer;
+    }
+    .notCompletedTask {
+        cursor: pointer;
+    }
 }

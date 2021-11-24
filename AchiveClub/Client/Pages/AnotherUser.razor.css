@@ -204,3 +204,38 @@ footer img {
         text-align: left;
     }
 }
+@media (min-width:1100px) {
+    #infoTask {
+        width: 100%;
+        text-align: left;
+    }
+
+    .notInfoTask {
+        width: 100%;
+        text-align: left;
+    }
+
+    #nameTask {
+        text-align: left;
+    }
+
+    .aboutTask {
+        width: 100%;
+    }
+
+    .mark {
+        display: unset;
+    }
+
+    .taskXP {
+        width: 100px;
+        text-align: right;
+    }
+    .completedTask {
+        cursor: pointer;
+    }
+
+    .notCompletedTask {
+        cursor: pointer;
+    }
+}
