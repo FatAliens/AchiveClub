@@ -23,7 +23,7 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpPost("login", Name = "Login")]
-        public ActionResult<CurrentUserInfo> Login(LoginParams loginParams)
+        public ActionResult<UserInfo> Login(LoginParams loginParams)
         {
             User user;
             try
@@ -38,7 +38,7 @@ namespace AchiveClub.Server.Controllers
             return UserToUserInfo(user);
         }
 
-        public CurrentUserInfo UserToUserInfo(User user)
+        public UserInfo UserToUserInfo(User user)
         {
             var achivementsInfo = new List<AchiveInfo>();
 
@@ -55,7 +55,7 @@ namespace AchiveClub.Server.Controllers
                 });
             }
 
-            var userInfo = new CurrentUserInfo()
+            var userInfo = new UserInfo()
             {
                 Id = user.Id,
                 FirstName = user.FirstName,

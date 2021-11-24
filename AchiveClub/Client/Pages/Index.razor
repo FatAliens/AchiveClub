@@ -1,181 +1,33 @@
 ﻿@page "/"
-@using AchiveClub.Shared.Models
-@inject HttpClient Http
+@inject NavigationManager Nav
 
-<!-- Модальное окно для входа на страницу -->
-<Modal Closing="OnModalClosing" @ref="loginModal">
-    <ModalContent Centered>
-        <ModalTitle Padding="Padding.Is3">Введите свои учетные данные</ModalTitle>
-        <ModalBody>
-            <Field>
-                <FieldLabel>
-                    Email
-                </FieldLabel>
-                <TextEdit Placeholder="Email" @bind-Text="loginParams.Email" Role="TextRole.Email" />
-            </Field>
-            <Field>
-                <FieldLabel>
-                    Пароль
-                </FieldLabel>
-                <TextEdit Placeholder="Пароль" @bind-Text="loginParams.Password" Role="TextRole.Password" />
-            </Field>
-        </ModalBody>
-        <ModalFooter>
-            <Button Block Color="Color.Success" Clicked="Login">Войти</Button>
-            <Divider DividerType="DividerType.Solid" />
-            <Button TextColor="TextColor.Black50">Регистрация</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
-
-<!-- Модальное окно для регистрации -->
-<Modal Closing="OnModalClosing" @ref="confirmModal">
-    <ModalContent Centered>
-
-        <ModalTitle Padding="Padding.Is2.FromTop.Is3.FromLeft.Is2.FromRight" Flex="Flex.JustifyContent.Between">
-            Введете ключ администратора
-            <CloseButton />
-        </ModalTitle>
-        <ModalBody>
-            <Paragraph Color="TextColor.Black50">Требуется подтверждение для задания "@currentAchive.Title"</Paragraph>
-            <TextEdit Placeholder="Admin Key" @bind-Text="adminKey" />
-        </ModalBody>
-        <ModalFooter>
-            <Button Block Color="Color.Success" Clicked="ConfirmAchive">Подтвердить</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
-
-<Container Fluid>
-    <!-- Вошел ли пользователь -->
-    @if (user != null)
-    {
-        <!-- Информация о пользователе -->
-        <Row>
-            <h1>Привет @user.FirstName @user.LastName!</h1>
-            <Paragraph>Пользовательская часть приложения AchiveClub пока что находиться в разработке и использует тестовый интерфейс.</Paragraph>
-        </Row>
-        <!-- Список достижений -->
-        <Row>
-            <Column Flex="Flex.JustifyContent.Center" ColumnSize="ColumnSize.IsFull">
-                @if (!achivementsWithCompletedState.Any())
-                {
-                    <Alert Color="Color.Warning">Список достижений пуст!</Alert>
-                }
-                else
-                {
-                    <ListGroup Flex="Flex.Fill">
-                        @foreach (var achive in achivementsWithCompletedState)
-                        {
-                            <ListGroupItem>
-                                <Card Margin="Margin.Is4.FromBottom">
-                                    <CardHeader>
-                                        <Div Flex="Flex.JustifyContent.Start">
-                                            <Figure Padding="Padding.Is2">
-                                                <FigureImage Source="48x48.png" />
-                                            </Figure>
-                                            <CardTitle Size="2">
-                                                @achive.Key.Title
-                                            </CardTitle>
-                                        </Div>
-                                    </CardHeader>
-                                    <CardBody>
-                                        @achive.Key.Description
-                                    </CardBody>
-                                    <CardActions>
-                                        @if (achive.Value)
-                                        {
-                                            <Badge Color="Color.Success">Выполнено</Badge>
-                                        }
-                                        else
-                                        {
-                                            <Button Color="Color.Primary" Clicked="()=>ShowConfirmModal(achive.Key)">Выполнить!</Button>
-                                        }
-                                    </CardActions>
-                                </Card>
-                            </ListGroupItem>
-                        }
-                    </ListGroup>
-                }
-            </Column>
-        </Row>
-    }
-    else
-    {
-        <Heading>Загрузка...</Heading>
-    }
-</Container>
+<button @onclick="()=>ToCurrentUserPage()">To Current User Page!</button>
+<hr/>
+<button @onclick="()=>ToAnotherUserPage()">To Another User Page!</button>
+<hr/>
+<button @onclick="()=>ToLoginPage()">To Login Page!</button>
+<hr/>
+<button @onclick="()=>ToRegistrationPage()">To Registration Page!</button>
 
 @code
 {
-    private string adminKey = "";
-    private Modal loginModal;
-    private Modal confirmModal;
-
-    private LoginParams loginParams = new LoginParams();
-    private Achive currentAchive = new Achive();
-
-    private User user;
-    private Dictionary<Achive, bool> achivementsWithCompletedState = new Dictionary<Achive, bool>();
-
-    protected override void OnAfterRender(bool firstRender)
+    public void ToCurrentUserPage()
     {
-        if (firstRender)
-        {
-            loginModal.Show();
-
-            //автоматический вход для теста интерфейса
-            loginParams.Email = "Ivan76@ya.ru";
-            loginParams.Password = "iWjZnf";
-            InvokeAsync(() => Login());
-
-        }
+        Nav.NavigateTo("/current_user");
     }
 
-    private void OnModalClosing(ModalClosingEventArgs e)
+    public void ToAnotherUserPage()
     {
-        if (e.CloseReason != CloseReason.UserClosing)
-        {
-            e.Cancel = true;
-        }
+        Nav.NavigateTo("/another_user");
     }
 
-    private async Task Login()
+    public void ToLoginPage()
     {
-        var result = await Http.PostAsJsonAsync<LoginParams>("api/Auth/login", loginParams);
-        user = await result.Content.ReadFromJsonAsync<User>();
-
-        var achivements = await Http.GetFromJsonAsync<Achive[]>("api/Achivements");
-        UpdateAchivements(achivements);
-
-        await loginModal.Close(CloseReason.UserClosing);
-        StateHasChanged();
+        Nav.NavigateTo("/login");
     }
 
-    private async Task ConfirmAchive()
+    public void ToRegistrationPage()
     {
-
-    }
-
-    private void ShowConfirmModal(Achive completeAchive)
-    {
-        currentAchive = completeAchive;
-        confirmModal.Show();
-    }
-
-    private void UpdateAchivements(Achive[] achivements)
-    {
-        achivementsWithCompletedState.Clear();
-        foreach (var achive in achivements)
-        {
-            if (user.CompletedAchivements.Find(a => a.Id == achive.Id) != null)
-            {
-                achivementsWithCompletedState.Add(achive, true);
-            }
-            else
-            {
-                achivementsWithCompletedState.Add(achive, false);
-            }
-        }
+        Nav.NavigateTo("/registration");
     }
 }

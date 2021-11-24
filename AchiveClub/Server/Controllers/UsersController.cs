@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using AchiveClub.Shared.DTO;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -22,18 +23,40 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpGet(Name = "GetAll")]
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserInfo> GetAll()
         {
-            return _dbContext.Users.ToList();
+            var users = new List<UserInfo>();
+            users.Add(new UserInfo()
+            {
+                FirstName = "Hello World",
+                Id = 1,
+                Achivements = new List<AchiveInfo>()
+            });
+
+            return users;
+        }
+
+        private List<UserInfo> UsersToUserInfo(List<User> users)
+        {
+            throw new NotImplementedException();
+        }
+
+        private UserInfo UserToUserInfo(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        private List<AchiveInfo> AchivementsToAchiveInfo()
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost]
-        public ActionResult Post(User user)
+        public ActionResult Post(UserInfo user)
         {
             try
             {
-                _dbContext.Users.Add(user);
-                _dbContext.SaveChanges();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
@@ -43,12 +66,11 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpPut]
-        public ActionResult Put(User user)
+        public ActionResult Put(UserInfo user)
         {
             try
             {
-                _dbContext.Users.Update(user);
-                _dbContext.SaveChanges();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {

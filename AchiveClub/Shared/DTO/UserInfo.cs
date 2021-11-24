@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AchiveClub.Shared.DTO
 {
-    public class CurrentUserInfo
+    public class UserInfo
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
