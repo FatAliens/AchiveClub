@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using AchiveClub.Shared.DTO
-@inject LoginService login
+@inject LoginService _login
+@inject NavigationManager _navigation
 
 <!-----------------------------------nav----------------------------------------->
 <header>
@@ -47,9 +48,10 @@
 
     public async Task LoginAsync()
     {
-        if (await login.LoginAsync(loginParams))
+        if (await _login.LoginAsync(loginParams))
         {
-            result = $"Вы вошли {login.CurrentUser.FirstName} {login.CurrentUser.LastName}";
+            result = $"Вы вошли {_login.CurrentUser.FirstName} {_login.CurrentUser.LastName}";
+            _navigation.NavigateTo("/");
         }
         else
         {

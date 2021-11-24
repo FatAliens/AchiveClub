@@ -8,6 +8,7 @@ namespace AchiveClub.Client
     public class LoginService
     {
         public UserInfo CurrentUser { get; private set; }
+        public bool IsAuthorized { get; private set; } = false;
 
         private HttpClient _client;
 
@@ -25,6 +26,11 @@ namespace AchiveClub.Client
                 if(user!=null)
                 {
                     CurrentUser = user;
+                    IsAuthorized = true;
+                }
+                else
+                {
+                    Logout();
                 }
             }
             catch
@@ -37,6 +43,7 @@ namespace AchiveClub.Client
         public void Logout()
         {
             CurrentUser = null;
+            IsAuthorized = false;
         }
     }
 }
