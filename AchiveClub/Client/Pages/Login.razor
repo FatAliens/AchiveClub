@@ -35,7 +35,7 @@
         </div>
         <div class="registerForm">
             <hr />
-            <p>Зарегистрироваться</p>
+            <p @onclick="ToRegistration">Зарегистрироваться</p>
         </div>
         <p>@result</p>
     </div>
@@ -57,5 +57,10 @@
         {
             result = "Вы не вошли";
         }
+    }
+
+    public void ToRegistration()
+    {
+        _navigation.NavigateTo("/registration");
     }
 }
