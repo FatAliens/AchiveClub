@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using AchiveClub.Shared.DTO;
+using AchiveClub.Server.Mappers;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -25,30 +26,7 @@ namespace AchiveClub.Server.Controllers
         [HttpGet(Name = "GetAll")]
         public IEnumerable<UserInfo> GetAll()
         {
-            var users = new List<UserInfo>();
-            users.Add(new UserInfo()
-            {
-                FirstName = "Hello World",
-                Id = 1,
-                Achivements = new List<AchiveInfo>()
-            });
-
-            return users;
-        }
-
-        private List<UserInfo> UsersToUserInfo(List<User> users)
-        {
-            throw new NotImplementedException();
-        }
-
-        private UserInfo UserToUserInfo(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<AchiveInfo> AchivementsToAchiveInfo()
-        {
-            throw new NotImplementedException();
+            return UserToUserInfoMapper.UsersToUserInfo(_dbContext.Users.ToList(), _dbContext.Achivements.ToList());
         }
 
         [HttpPost]

@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using AchiveClub.Server.Mappers;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -34,35 +35,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-            return UserToUserInfo(user);
-        }
-
-        public UserInfo UserToUserInfo(User user)
-        {
-            var achivementsInfo = new List<AchiveInfo>();
-
-            foreach (var achive in _dbContext.Achivements.ToList())
-            {
-                achivementsInfo.Add(new AchiveInfo()
-                {
-                    Id = achive.Id,
-                    Title = achive.Title,
-                    Description = achive.Description,
-                    Xp = achive.Xp,
-                    LogoURL = achive.LogoURL,
-                    Completed = user.CompletedAchivements.Where(a => a.AchiveRefId == achive.Id).Any()
-                });
-            }
-
-            var userInfo = new UserInfo()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                Achivements = achivementsInfo
-            };
-
-            return userInfo;
+            return UserToUserInfoMapper.UserToUserInfo(user, _dbContext.Achivements.ToList());
         }
 
         [HttpPost("register", Name = "Register")]
