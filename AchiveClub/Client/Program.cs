@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.Modal;
 
 namespace AchiveClub.Client
 {
@@ -18,8 +19,9 @@ namespace AchiveClub.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<LoginService>();
 
-            
+            builder.Services.AddBlazoredModal();
 
             await builder.Build().RunAsync();
         }

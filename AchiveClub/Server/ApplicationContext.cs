@@ -14,6 +14,7 @@ public class ApplicationContext : DbContext
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
+        //Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -21,7 +22,7 @@ public class ApplicationContext : DbContext
     {
         int userIdCounter = 1, adminIdCounter = 1, achiveIdCounter = 1, completedAchiveIdCounter = 1;
 
-        int usersCount = 20, achiveCount = 40, adminsCount = 5, completedAchiveCount = 40;
+        int usersCount = 20, achiveCount = 10, adminsCount = 5, completedAchiveCount = 100;
 
         var userFaker = new Faker<User>("ru")
             .RuleFor(u => u.Id, f => userIdCounter++)

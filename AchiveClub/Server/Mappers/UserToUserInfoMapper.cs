@@ -40,6 +40,7 @@ namespace AchiveClub.Server.Mappers
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
+                LastName = user.LastName,
                 Achivements = achivementsInfo
             };
 

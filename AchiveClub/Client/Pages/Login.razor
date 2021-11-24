@@ -1,37 +1,59 @@
 ﻿@page "/login"
+@using AchiveClub.Shared.DTO
+@inject LoginService login
 
 <!-----------------------------------nav----------------------------------------->
-    <header>
-        <div class="header-wrapper">
-            <div class="img">
-                <img src="./image/gllg.png" alt="">
-            </div>
-            <div class="text-wrapper">
-                <h3>Клуб <m>It_Club</m>
-                </h3>
-            </div>
+<header>
+    <div class="header-wrapper">
+        <div class="img">
+            <img src="./image/gllg.png" alt="">
         </div>
-    </header>
-    <!-----------------------------------main----------------------------------------->
-    <main>
-        <div class="content-wrapper">
-            <div class="headingWrapper">
-                <h3>Войти в систему</h3>
-            </div>
-            <div class="emailForm">
-                <span>Email</span>
-                <input type="email" name="" id="emailInput">
-            </div>
-            <div class="passwordForm">
-                <span>Пароль</span>
-                <input type="password" name="" id="passwordInput">
-            </div>
-            <div class="submitButton">
-                <button type="submit">Войти</button>
-            </div>
-            <div class="registerForm">
-                <hr/>
-                <p><a href="register.html">Зарегистрироваться</a></p>
-            </div>
+        <div class="text-wrapper">
+            <h3>
+                Компания <m>It_Club</m>
+            </h3>
         </div>
-    </main>
+    </div>
+</header>
+<!-----------------------------------main----------------------------------------->
+<main>
+    <div class="content-wrapper">
+        <div class="headingWrapper">
+            <h3>Войти в систему</h3>
+        </div>
+        <div class="emailForm">
+            <span>Email</span>
+            <input type="email" name="" id="emailInput" @bind-value="loginParams.Email">
+        </div>
+        <div class="passwordForm">
+            <span>Пароль</span>
+            <input type="password" name="" id="passwordInput" @bind-value="loginParams.Password">
+        </div>
+        <div class="submitButton">
+            <button type="submit" @onclick="LoginAsync">Войти</button>
+        </div>
+        <div class="registerForm">
+            <hr />
+            <p>Зарегистрироваться</p>
+        </div>
+        <p>@result</p>
+    </div>
+</main>
+
+@code
+{
+    private LoginParams loginParams = new LoginParams();
+    private string result;
+
+    public async Task LoginAsync()
+    {
+        if (await login.LoginAsync(loginParams))
+        {
+            result = $"Вы вошли {login.CurrentUser.FirstName} {login.CurrentUser.LastName}";
+        }
+        else
+        {
+            result = "Вы не вошли";
+        }
+    }
+}

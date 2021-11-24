@@ -1,4 +1,6 @@
 ﻿@page "/current_user"
+@using AchiveClub.Shared.DTO
+@inject HttpClient _client
 
 <nav>
     <div class="userMenu">
@@ -22,8 +24,11 @@
         </div>
         <div class="userId">
             <h1>
-                Имя <br>
-                Фамилия
+                <!--First Name-->
+                @_user.FirstName
+                <br>
+                <!--Last Name-->
+                @_user.LastName
             </h1>
 
         </div>
@@ -32,120 +37,132 @@
 <!-----------------------------------header----------------------------------------->
 <main>
     <div class="generalInfo">
-        <div class="club">
+        @*
+            <div class="club">
+            <!--Locate-->
             <h1 id="locate">Клуб <b id="clubName">Феликс</b>, просп. Газеты Правда, 9А</h1>
             <p id="locateSlogan">Место обучения</p>
-        </div>
-        <hr id="hr">
+            </div>
+            <hr id="hr">
+        *@
         <div class="xp">
-            <h1 id="XPLevel">100500 ХР</h1>
+            <!--XP SUM-->
+            <h1 id="XPLevel">@XPSum ХР</h1>
             <p id="XPSlogan">Общее количество опыта</p>
         </div>
         <hr id="hr">
         <div class="task">
-            <h1 id="allTasks">Заданий выполнено: 10 из 20</h1>
-            <p id="tasksSlogan">Выполнено 50%</p>
+            <!--Completed Count-->
+            <h1 id="allTasks">Заданий выполнено: @CompletedAchievementsCount из @AchievementsCount</h1>
+            <!--Completed Ratio (%)-->
+            <p id="tasksSlogan">Выполнено @CompletedRatio%</p>
         </div>
     </div>
     <!---It's generalInfo -->
     <div class="completed" id="completed">
         <h1 id="completedTasks">Выполненые: </h1>
     </div>
-    <!---------------------completed------------------>
-    <div class="completedTask" id="completedTask">
-        <div class="taskImg">
-            <img id="logoTask" src="image/Rectangle_20.svg" alt="">
-        </div>
-        <div class="aboutTask">
-            <div class="mark">
-                <h1 id="nameTask">День настольных игр </h1>
-                <!--<p id="markUp">Учеба</p>-->
-            </div>
-            <p class="infoTask" id="infoTask">
-                Помочь старшим координаорам в организации и проведении дня настолок по
-                воскресеньям.
-            </p>
-        </div>
-        <div class="taskXP">
-            <h1 id="reward">+70 XP</h1>
-        </div>
-    </div>
     <!------------task completed------------------------->
-    <div class="completedTask" id="completedTask">
-        <div class="taskImg">
-            <img id="logoTask" src="image/Rectangle_20.svg" alt="">
-        </div>
-        <div class="aboutTask">
-            <div class="mark">
-                <h1 id="nameTask">День настольных игр </h1>
-                <!-- <p id="markUpRed" class="markUpRed">Сорев</p>-->
+    @foreach (var achievement in _user.Achivements)
+    {
+        @if (achievement.Completed)
+        {
+            <div class="completedTask" id="completedTask">
+                <div class="taskImg">
+                    <img id="logoTask" src="image/Rectangle_20.svg" alt="">
+                </div>
+                <div class="aboutTask">
+                    <div class="mark">
+                        <h1 id="nameTask">
+                            @achievement.Title
+                        </h1>
+                    </div>
+                    <p class="infoTask" id="infoTask">
+                        @achievement.Description
+                    </p>
+                </div>
+                <div class="taskXP">
+                    <h1 id="reward">
+                        +@achievement.Xp XP
+                    </h1>
+                </div>
             </div>
-            <p class="infoTask" id="infoTask">
-                Помочь старшим координаорам в организации и проведении дня настолок по
-                воскресеньям.
-            </p>
-        </div>
-        <div class="taskXP">
-            <h1 id="reward">+70 XP</h1>
-        </div>
-    </div>
+        }
+    }
     <!------------task completed------------------------->
+
     <div class="notCompleted" id="notCompleted">
         <h1 id="notCompletedTasks">Не выполненые: </h1>
     </div>
     <!---------------------Not completed------------------>
-    <div class="notCompletedTask" id="notCompletedTask">
-        <div class="taskImg">
-            <img id="logoTask" src="image/Rectangle_20.svg" alt="">
-        </div>
-        <div class="aboutTask">
-            <div class="mark">
-                <h1 id="nameTask">День настольных игр </h1>
-                <!-- <p id="markUp">Учеба</p>-->
+    @foreach (var achievement in _user.Achivements)
+    {
+        if (!achievement.Completed)
+        {
+            <div class="notCompletedTask" id="notCompletedTask" @onclick="()=>CompleteAchiveAsync(achievement.Id)">
+                <div class="taskImg">
+                    <img id="logoTask" src="image/Rectangle_20.svg" alt="">
+                </div>
+                <div class="aboutTask">
+                    <div class="mark">
+                        <h1 id="nameTask">
+                            @achievement.Title
+                        </h1>
+                    </div>
+                    <p class="notInfoTask">
+                        @achievement.Description
+                    </p>
+                </div>
+                <div class="taskXP">
+                    <h1 id="reward">
+                        +@achievement.Xp XP
+                    </h1>
+                </div>
             </div>
-            <p class="notInfoTask">
-                Помочь старшим координаорам в организации и проведении дня настолок по
-                воскресеньям.
-            </p>
-        </div>
-        <div class="taskXP">
-            <h1 id="reward">+70 XP</h1>
-        </div>
-    </div>
-    <!------------task not completed------------------------->
-    <div class="notCompletedTask" id="notCompletedTask">
-        <div class="taskImg">
-            <img id="logoTask" src="image/Rectangle_20.svg" alt="">
-        </div>
-        <div class="aboutTask">
-            <div class="mark">
-                <h1 id="nameTask">День настольных игр </h1>
-                <!-- <p id="markUpRed" class="markUpRed">Сорев</p>-->
-            </div>
-            <p class="notInfoTask">
-                Помочь старшим координаорам в организации и проведении дня настолок по
-                воскресеньям.
-            </p>
-        </div>
-        <div class="taskXP">
-            <h1 id="reward">+70 XP</h1>
-        </div>
-    </div>
-    <!------------task not completed------------------------->
+        }
+    }
+    <!---------------------Not completed------------------>
 </main>
 <!-----------------------------------main----------------------------------------->
-<!-----------------------------------footer----------------------------------------->
-<footer>
-    <div class="footerSections">
-        <div class="firstSection">
-            <img src="./image/Rectangle_20.svg" alt="">
-        </div>
-        <div class="secondSection">
-            <img src="./image/Rectangle_20.svg" alt="">
-            <hr />
-        </div>
-        <div class="thirdSection">
-            <img src="./image/Rectangle_20.svg" alt="">
-        </div>
-    </div>
-</footer>
+@code
+{
+    [CascadingParameter] public IModalService Modal { get; set; }
+
+    const int userId = 2;
+
+    private UserInfo _user { get; set; } = new UserInfo();
+
+    public int AchievementsCount => _user.Achivements.Count;
+    public int CompletedAchievementsCount => _user.Achivements.Count(a => a.Completed);
+    public int CompletedRatio => (int)(((float)CompletedAchievementsCount / (float)AchievementsCount) * 100);
+    public int XPSum => _user.Achivements.Where(a => a.Completed).Sum(a => a.Xp);
+
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateUserAsync();
+    }
+
+    private async Task CompleteAchiveAsync(int achivementId)
+    {
+        var modalInstance = Modal.Show<AdminKeyModal>();
+        var result = await modalInstance.Result;
+
+        if (!result.Cancelled)
+        {
+            string adminKey = (string)result.Data;
+            var completeAchiveParams = new CompleteAchiveParams()
+                {
+                    UserId = userId,
+                    AchiveId = achivementId,
+                    AdminKey = adminKey
+                };
+            await _client.PostAsJsonAsync<CompleteAchiveParams>("/api/Achivements/complete", completeAchiveParams);
+            await UpdateUserAsync();
+        }
+    }
+
+    private async Task UpdateUserAsync()
+    {
+        _user = await _client.GetFromJsonAsync<UserInfo>($"/api/Users/{userId}");
+    }
+}

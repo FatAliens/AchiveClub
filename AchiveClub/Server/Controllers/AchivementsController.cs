@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using AchiveClub.Shared.DTO;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -18,6 +19,36 @@ namespace AchiveClub.Server.Controllers
         {
             _logger = logger;
             _dbContext = dbContext;
+        }
+
+        [HttpPost("complete", Name = "CompleteAchievement")]
+        public ActionResult CompleteAchievement(CompleteAchiveParams completeAchiveParams)
+        {
+            if (!_dbContext.Achivements.Where(a => a.Id == completeAchiveParams.AchiveId).Any())
+            {
+                return BadRequest("Achivement not found!");
+            }
+            if (!_dbContext.Users.Where(u => u.Id == completeAchiveParams.UserId).Any())
+            {
+                return BadRequest("User not found!");
+            }
+            if (!_dbContext.Admins.Where(a => a.Key == completeAchiveParams.AdminKey).Any())
+            {
+                return BadRequest("Admin key invalid!");
+            }
+
+            var completedAchievament = new CompletedAchievement()
+            {
+                User = _dbContext.Users.First(u => u.Id == completeAchiveParams.UserId),
+                Achive = _dbContext.Achivements.First(a => a.Id == completeAchiveParams.AchiveId),
+                Admin = _dbContext.Admins.First(a => a.Key == completeAchiveParams.AdminKey),
+                DateOfCompletion = DateTime.Now
+            };
+
+            _dbContext.CompletedAchivements.Add(completedAchievament);
+            _dbContext.SaveChanges();
+
+            return Ok();
         }
 
         [HttpGet]

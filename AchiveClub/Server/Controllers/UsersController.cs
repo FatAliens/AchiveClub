@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AchiveClub.Shared.DTO;
 using AchiveClub.Server.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -27,6 +28,13 @@ namespace AchiveClub.Server.Controllers
         public IEnumerable<UserInfo> GetAll()
         {
             return UserToUserInfoMapper.UsersToUserInfo(_dbContext.Users.ToList(), _dbContext.Achivements.ToList());
+        }
+
+        [HttpGet("{id}", Name = "GetOne")]
+        public UserInfo GetOne(int id)
+        {
+            var user =  UserToUserInfoMapper.UserToUserInfo(_dbContext.Users.Where(u => u.Id == id).Include(u=>u.CompletedAchivements).First(), _dbContext.Achivements.ToList());
+            return user;
         }
 
         [HttpPost]
