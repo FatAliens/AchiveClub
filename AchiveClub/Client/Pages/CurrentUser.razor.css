@@ -213,4 +213,8 @@ footer img {
     .mark {
         display: unset;
     }
+    .taskXP {
+        width: 100px;
+        text-align: right;
+    }
 }
