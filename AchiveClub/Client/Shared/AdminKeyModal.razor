@@ -1,9 +1,11 @@
 ﻿@using System.ComponentModel.DataAnnotations
 
-<div>
+<div class="adminKeyinput">
     <input type="text" placeholder="admin key" @bind-value="_message"/>
-    <button @onclick="SubmitForm">Submit</button>
-    <button @onclick="Cancel">Cancel</button>
+    <div class="buttons">
+        <button id="buttonSubmit" @onclick="SubmitForm">Submit</button>
+        <!-- <button id="buttonCancel" @onclick="Cancel">Cancel</button> -->
+    </div>
 </div>
 
 @code {
@@ -15,6 +17,6 @@
     protected override void OnInitialized() => BlazoredModal.SetTitle("Введите ключ адмистратора!");
 
     async Task SubmitForm() => await BlazoredModal.CloseAsync(ModalResult.Ok(_message));
-    async Task Cancel() => await BlazoredModal.CancelAsync();
+  //  async Task Cancel() => await BlazoredModal.CancelAsync();
 
 }
