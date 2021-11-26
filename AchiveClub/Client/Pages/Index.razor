@@ -8,6 +8,8 @@
 <button @onclick="()=>ToLoginPage()">To Login Page!</button>
 <hr />
 <button @onclick="()=>ToRegistrationPage()">To Registration Page!</button>
+<hr />
+<button @onclick="()=>ToTopUsersPage()">To Top Users Page!</button>
 
 @code
 {
@@ -29,5 +31,10 @@
     public void ToRegistrationPage()
     {
         Nav.NavigateTo("/registration");
+    }
+
+    public void ToTopUsersPage()
+    {
+        Nav.NavigateTo("/topusers");
     }
 }
