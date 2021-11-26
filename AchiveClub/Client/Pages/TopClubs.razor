@@ -1,0 +1,127 @@
+﻿@page "/topclubs"
+@inject NavigationManager Nav
+
+<header>
+        <div class="heading-wrapper">
+            <div id="profileSlogan">
+                <span>Топ рейтинг клубов</span>
+            </div>
+        </div>
+    </header>
+    <!-----------------------------------header----------------------------------------->
+    <main>
+        <div class="topUsers">
+            <a @onclick="()=>ToGoldClub()">
+                <div class="topOneUser">
+                    <div class="userImageTop">
+                        <img src="./image/Без имени-1.png" alt="">
+                    </div>
+                    <div class="userAboutWrapper">
+                        <div class="nameSurnameUser">
+                            <span>Клуб "Дворец"</span>
+                        </div>
+                        <div class="xpCountUser">
+                            <span>Средний опыт: 100400 XP</span>
+                        </div>
+                    </div>
+                    <div class="ClubLogoAndPositionUser">
+                        <div class="topPositionUser">
+                            <span>#1</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a @onclick="()=>ToSilverClub()">
+                <div class="topTwoUser">
+                    <div class="userImageTop">
+                        <img src="./image/Без имени-1.png" alt="">
+                    </div>
+                    <div class="userAboutWrapper">
+                        <div class="nameSurnameUser">
+                            <span>Клуб "Дворец"</span>
+                        </div>
+                        <div class="xpCountUser">
+                            <span>Средний опыт: 100400 XP</span>
+                        </div>
+                    </div>
+                    <div class="ClubLogoAndPositionUser">
+                        <div class="topPositionUser">
+                            <span>#2</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a @onclick="()=>ToBronzeClub()">
+                <div class="topThreeUser">
+                    <div class="userImageTop">
+                        <img src="./image/Без имени-1.png" alt="">
+                    </div>
+                    <div class="userAboutWrapper">
+                        <div class="nameSurnameUser">
+                            <span>Клуб "Дворец"</span>
+                        </div>
+                        <div class="xpCountUser">
+                            <span>Средний опыт: 100400 XP</span>
+                        </div>
+                    </div>
+                    <div class="ClubLogoAndPositionUser">
+                        <div class="topPositionUser">
+                            <span>#3</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="topUser">
+                <div class="userImage">
+                    <img src="./image/Без имени-1.png" alt="">
+                </div>
+                <div class="userAboutWrapper">
+                    <div class="nameSurnameUser">
+                        <span>Клуб "Дворец"</span>
+                    </div>
+                    <div class="xpCountDefaultUser">
+                        <span>Средний опыт: 100400 XP</span>
+                    </div>
+                </div>
+                <div class="ClubLogoAndPositionUser">
+                    <div class="topPositionUserDefault">
+                        <span>#4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-----------------------------------main----------------------------------------->
+    <!-----------------------------------footer----------------------------------------->
+    <footer>
+        <div class="footerSections">
+            <div class="secondSection">
+                <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
+                <hr />
+            </div>
+            <div class="firstSection">
+                <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
+            </div>
+            <div class="thirdSection">
+                <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
+            </div>
+        </div>
+    </footer>
+    <!-----------------------------------footer----------------------------------------->
+
+@code {
+    public void ToGoldClub()
+    {
+        Nav.NavigateTo("/topclubgold");
+    }
+
+    public void ToSilverClub()
+    {
+        Nav.NavigateTo("/topclubsilver");
+    }
+
+    public void ToBronzeClub()
+    {
+        Nav.NavigateTo("/topclubbronze");
+    }
+}

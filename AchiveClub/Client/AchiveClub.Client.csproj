@@ -6,6 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\TopClubBronze.razor.css" />
+    <None Remove="Pages\TopClubGold.razor.css" />
+    <None Remove="Pages\TopClubs.razor.css" />
+    <None Remove="Pages\TopClubSilver.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\TopClubBronze.razor.css" />
+    <Content Include="Pages\TopClubGold.razor.css" />
+    <Content Include="Pages\TopClubs.razor.css" />
+    <Content Include="Pages\TopClubSilver.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.Modal" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />

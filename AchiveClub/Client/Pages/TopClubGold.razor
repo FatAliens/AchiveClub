@@ -1,15 +1,34 @@
-﻿@page "/topusers"
-
+﻿@page "/topclubgold"
+@inject NavigationManager Nav
 <header>
         <div class="heading-wrapper">
             <div id="profileSlogan">
-                <span>Топ <b>100</b> игроков</span>
+                <div id="arrowExit">
+                    <a @onclick="()=>TopClubs()"><img src="./image/left-chevron.png" alt=""></a>
+                </div>
+                <span id="club">Клуб</span>
+                <span><b>«Дворец»</b></span>
+            </div>
+            <div class="clubPositionLogo">
+                <span id="clubPosition">#1</span>
+                <img src="./image/Без имени-1.png" alt="">
             </div>
         </div>
     </header>
-    <!-----------------------------------header----------------------------------------->
     <main>
-        <div class="topUsers">
+        <div class="historyClub">
+            <h3>История клуба:</h3>
+            <p id="textHistoryClub">Господа, современная методология разработки не даёт нам иного выбора, кроме
+                определения стандартных
+                подходов. Высокий уровень вовлечения представителей целевой аудитории является четким доказательством
+                простого факта: консультация с широким активом влечет за собой процесс внедрения и модернизации
+                существующих финансовых и административных условий. </p>
+            <p id="adressHistoryClub">ул. Долгобродская 24,к. 74-75</p>
+        </div>
+        <div class="topThreeUsers">
+            <div class="topThreeUsersHead">
+                <h3>Топ <b>3</b> игроков: </h3>
+            </div>
             <div class="topOneUser">
                 <div class="userImage">
                     <img src="./image/Rectangle_20.svg" alt="">
@@ -23,9 +42,6 @@
                     </div>
                 </div>
                 <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
                     <div class="topPositionUser">
                         <span>#1</span>
                     </div>
@@ -44,9 +60,6 @@
                     </div>
                 </div>
                 <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
                     <div class="topPositionUser">
                         <span>#2</span>
                     </div>
@@ -65,38 +78,13 @@
                     </div>
                 </div>
                 <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
                     <div class="topPositionUser">
                         <span>#3</span>
                     </div>
                 </div>
             </div>
-            <div class="topUser">
-                <div class="userImage">
-                    <img src="./image/Rectangle_20.svg" alt="">
-                </div>
-                <div class="userAboutWrapper">
-                    <div class="nameSurnameUser">
-                        <span>Имя Фамилия</span>
-                    </div>
-                    <div class="xpCountDefaultUser">
-                        <span>100400 XP</span>
-                    </div>
-                </div>
-                <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
-                    <div class="topPositionUserDefault">
-                        <span>#4</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
-    <!-----------------------------------main----------------------------------------->
     <!-----------------------------------footer----------------------------------------->
     <div class="px"></div>
     <footer>
@@ -114,3 +102,10 @@
         </div>
     </footer>
     <!-----------------------------------footer----------------------------------------->
+
+@code {
+    public void TopClubs()
+    {
+        Nav.NavigateTo("/topclubs");
+    }
+}

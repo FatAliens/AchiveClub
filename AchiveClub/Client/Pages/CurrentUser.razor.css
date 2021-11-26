@@ -210,6 +210,11 @@ footer img {
     margin: 0;
 }
 
+.px {
+    width: 100%;
+    height: 75px;
+}
+
 @media(max-width:430px) {
     #infoTask {
         text-align: left;

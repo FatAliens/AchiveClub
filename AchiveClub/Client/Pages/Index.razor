@@ -10,6 +10,8 @@
 <button @onclick="()=>ToRegistrationPage()">To Registration Page!</button>
 <hr />
 <button @onclick="()=>ToTopUsersPage()">To Top Users Page!</button>
+<hr />
+<button @onclick="()=>ToTopClubsPage()">To Top Clubs Page!</button>
 
 @code
 {
@@ -36,5 +38,10 @@
     public void ToTopUsersPage()
     {
         Nav.NavigateTo("/topusers");
+    }
+
+    public void ToTopClubsPage()
+    {
+        Nav.NavigateTo("/topclubs");
     }
 }
