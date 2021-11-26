@@ -24,6 +24,10 @@ nav {
     width: 50px;
 }
 
+#arrowExit a img:hover {
+    cursor: pointer;
+}
+
 .userProfile {
     display: flex;
 }
