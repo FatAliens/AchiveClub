@@ -29,6 +29,7 @@ public class ApplicationContext : DbContext
             .RuleFor(u => u.FirstName, f => f.Person.FirstName)
             .RuleFor(u => u.LastName, f => f.Person.LastName)
             .RuleFor(u => u.Email, f => f.Person.Email)
+            .RuleFor(u => u.Avatar, f => $"/image/avatars/{f.Random.Number(1, 16)}.jpg")
             .RuleFor(u => u.Password, f => f.Internet.Password(6));
 
         var adminFaker = new Faker<Admin>("ru")
@@ -41,7 +42,7 @@ public class ApplicationContext : DbContext
             .RuleFor(a => a.Xp, f => f.Random.Number(5, 100) * 10)
             .RuleFor(a => a.Title, f => $"{f.Hacker.Verb()} {f.Hacker.Adjective()} {f.Hacker.Noun()}")
             .RuleFor(a => a.Description, f => f.Hacker.Phrase())
-            .RuleFor(a => a.LogoURL, f => f.Image.PicsumUrl());
+            .RuleFor(a => a.LogoURL, f => f.Image.PicsumUrl(600, 600, imageId: f.Random.Number(1,100)));
 
         var comletedAchiveFaker = new Faker<CompletedAchievement>("ru")
             .RuleFor(a => a.Id, f => completedAchiveIdCounter++)
@@ -50,8 +51,29 @@ public class ApplicationContext : DbContext
             .RuleFor(a => a.AdminRefId, f => f.Random.Number(1, adminsCount))
             .RuleFor(a => a.DateOfCompletion, f => f.Date.Recent(60));
 
-        modelBuilder.Entity<User>().HasData(userFaker.Generate(usersCount));
-        modelBuilder.Entity<Admin>().HasData(adminFaker.Generate(adminsCount));
+        var users = userFaker.Generate(usersCount);
+
+        users.Add(new User
+        {
+            Email = "test@mail.com",
+            Password = "1234",
+            FirstName = "Алёша",
+            LastName = "Попович",
+            Avatar = "/image/avatars/8.jpg",
+            Id = userIdCounter++
+        });
+
+        var admins = adminFaker.Generate(adminsCount);
+
+        admins.Add(new Admin
+        {
+            Name = "admin",
+            Key = "admin",
+            Id = adminIdCounter++
+        });
+
+        modelBuilder.Entity<User>().HasData(users);
+        modelBuilder.Entity<Admin>().HasData(admins);
         modelBuilder.Entity<Achievement>().HasData(achiveFaker.Generate(achiveCount));
         modelBuilder.Entity<CompletedAchievement>().HasData(comletedAchiveFaker.Generate(completedAchiveCount));
     }
