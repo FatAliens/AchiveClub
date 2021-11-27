@@ -1,6 +1,8 @@
-﻿@page "/current_user"
+﻿@page "/"
 @using AchiveClub.Shared.DTO
 @inject HttpClient _client
+@inject LoginService _login
+@inject NavigationManager _navigation
 
 <header>
     <div class="heading-wrapper">
@@ -137,18 +139,26 @@
 {
     [CascadingParameter] public IModalService Modal { get; set; }
 
-    const int userId = 2;
-
-    private UserInfo _user { get; set; } = new UserInfo();
-
     public int AchievementsCount => _user.Achivements.Count;
     public int CompletedAchievementsCount => _user.Achivements.Count(a => a.Completed);
     public int CompletedRatio => (int)(((float)CompletedAchievementsCount / (float)AchievementsCount) * 100);
     public int XPSum => _user.Achivements.Where(a => a.Completed).Sum(a => a.Xp);
 
+    private UserInfo _user = new UserInfo();
+    private int userId;
+
+
     protected async override Task OnInitializedAsync()
     {
-        await UpdateUserAsync();
+        if (!_login.IsAuthorized)
+        {
+            _navigation.NavigateTo("/login");
+        }
+        else
+        {
+            userId = _login.CurrentUser.Id;
+            await UpdateUserAsync();
+        }
     }
 
     private async Task CompleteAchiveAsync(int achivementId)

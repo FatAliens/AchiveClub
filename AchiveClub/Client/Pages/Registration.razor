@@ -1,4 +1,7 @@
 ﻿@page "/registration"
+@using AchiveClub.Shared.DTO
+@inject LoginService _login
+@inject NavigationManager _navigation
 
 <!-----------------------------------nav----------------------------------------->
 <header>
@@ -8,7 +11,7 @@
         </div>
         <div class="text-wrapper">
             <h3>
-                Клуб <m>It_Club</m>
+                Компания <m>It_Club</m>
             </h3>
         </div>
     </div>
@@ -17,7 +20,7 @@
 <main>
     <div class="content-wrapper">
         <div class="registerForm">
-            <p><a href="auth.html">Войти в систему</a></p>
+            <p><a @onclick="ToLogin">Войти в систему</a></p>
             <hr />
         </div>
         <div class="emailForm">
@@ -49,3 +52,12 @@
         </div>
     </div>
 </main>
+
+@code
+{
+
+    public void ToLogin()
+    {
+        _navigation.NavigateTo("/login");
+    }
+}
