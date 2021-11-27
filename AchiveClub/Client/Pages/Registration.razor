@@ -1,6 +1,6 @@
 ﻿@page "/registration"
 @using AchiveClub.Shared.DTO
-@inject LoginService _login
+@inject RegistrationService _registration
 @inject NavigationManager _navigation
 
 <!-----------------------------------nav----------------------------------------->
@@ -25,15 +25,15 @@
         </div>
         <div class="emailForm">
             <span>Имя</span>
-            <input type="text" name="" id="emailInput">
+            <input type="text" name="" id="emailInput" @bind-value="_registrationParams.FirstName">
         </div>
         <div class="passwordForm">
             <span>Фамилия</span>
-            <input type="text" name="" id="passwordInput">
+            <input type="text" name="" id="passwordInput" @bind-value="_registrationParams.LastName">
         </div>
         <div class="passwordForm">
             <span>Email</span>
-            <input type="text" name="" id="passwordInput">
+            <input type="text" name="" id="passwordInput" @bind-value="_registrationParams.Email">
         </div>
         <div class="emailForm">
             <span>Место обучения</span>
@@ -41,22 +41,37 @@
         </div>
         <div class="emailForm">
             <span>Пароль</span>
-            <input type="email" name="" id="emailInput">
+            <input type="email" name="" id="emailInput" @bind-value="_registrationParams.Password">
         </div>
         <div class="passwordForm">
             <span>Подтверждение пароля</span>
             <input type="password" name="" id="passwordInput">
         </div>
         <div class="submitButton">
-            <button type="submit">Регистрация</button>
+            <button type="submit" @onclick="RegistrateAsync">Регистрация</button>
         </div>
+        <p>@_resultMessage</p>
     </div>
 </main>
 
 @code
 {
+    private string _resultMessage = "";
+    private RegisterParams _registrationParams = new RegisterParams();
 
-    public void ToLogin()
+    private async Task RegistrateAsync()
+    {
+        if(await _registration.Registrate(_registrationParams))
+        {
+            _resultMessage = "Вы успешно зарегистрированы!";
+        }
+        else
+        {
+            _resultMessage = "Ошибка регистрации!";
+        }
+    }
+
+    private void ToLogin()
     {
         _navigation.NavigateTo("/login");
     }
