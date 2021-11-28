@@ -62,7 +62,8 @@ public class ApplicationContext : DbContext
             FirstName = "Алёша",
             LastName = "Попович",
             Avatar = "/image/avatars/8.jpg",
-            Id = userIdCounter++
+            Id = userIdCounter++,
+            ClubRefId = 1
         });
 
         var admins = adminFaker.Generate(adminsCount);

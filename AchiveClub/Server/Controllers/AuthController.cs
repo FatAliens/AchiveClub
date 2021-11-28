@@ -49,7 +49,8 @@ namespace AchiveClub.Server.Controllers
                         FirstName = registerParams.FirstName,
                         LastName = registerParams.LastName,
                         Email = registerParams.Email,
-                        Password = registerParams.Password
+                        Password = registerParams.Password,
+                        ClubRefId = 1
                     });
                 _dbContext.SaveChanges();
             }
