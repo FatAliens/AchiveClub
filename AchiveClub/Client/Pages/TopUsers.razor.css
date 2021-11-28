@@ -61,6 +61,7 @@ footer img {
     border-radius: 20px;
     display: flex;
     padding: 15px;
+    cursor: pointer;
 }
 
 .topTwoUser {
@@ -69,6 +70,7 @@ footer img {
     display: flex;
     padding: 15px;
     margin-top: 15px;
+    cursor: pointer;
 }
 
 .topThreeUser {
@@ -77,6 +79,7 @@ footer img {
     display: flex;
     padding: 15px;
     margin-top: 15px;
+    cursor: pointer;
 }
 
 .topUser {
@@ -85,6 +88,7 @@ footer img {
     display: flex;
     padding: 15px;
     margin-top: 15px;
+    cursor: pointer;
 }
 
 .userImage img {
