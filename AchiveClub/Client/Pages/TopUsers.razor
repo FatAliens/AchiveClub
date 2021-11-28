@@ -1,116 +1,81 @@
 ﻿@page "/topusers"
+@using AchiveClub.Shared.DTO
+@inject HttpClient _client
+@inject NavigationManager _navigation
 
 <header>
-        <div class="heading-wrapper">
-            <div id="profileSlogan">
-                <span>Топ <b>100</b> игроков</span>
-            </div>
+    <div class="heading-wrapper">
+        <div id="profileSlogan">
+            <span>Топ <b>100</b> игроков</span>
         </div>
-    </header>
-    <!-----------------------------------header----------------------------------------->
-    <main>
-        <div class="topUsers">
-            <div class="topOneUser">
-                <div class="userImage">
-                    <img src="./image/Rectangle_20.svg" alt="">
-                </div>
-                <div class="userAboutWrapper">
-                    <div class="nameSurnameUser">
-                        <span>Имя Фамилия</span>
+    </div>
+</header>
+<!-----------------------------------header----------------------------------------->
+<main>
+    <div class="topUsers">
+        @if (_users != null)
+        {
+            @foreach(var user in _users)
+            {
+                <div class="@GetUserClass(user)" @onclick="()=>RedirectToUserId(user.Id)">
+                    <div class="userImage">
+                        <img src="@user.Avatar" alt="">
                     </div>
-                    <div class="xpCountUser">
-                        <span>100400 XP</span>
+                    <div class="userAboutWrapper">
+                        <div class="nameSurnameUser">
+                            <span>@user.FirstName @user.LastName</span>
+                        </div>
+                        <div class="xpCountDefaultUser">
+                            <span>@user.XPSum XP</span>
+                        </div>
                     </div>
-                </div>
-                <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
-                    <div class="topPositionUser">
-                        <span>#1</span>
-                    </div>
-                </div>
-            </div>
-            <div class="topTwoUser">
-                <div class="userImage">
-                    <img src="./image/Rectangle_20.svg" alt="">
-                </div>
-                <div class="userAboutWrapper">
-                    <div class="nameSurnameUser">
-                        <span>Имя Фамилия</span>
-                    </div>
-                    <div class="xpCountUser">
-                        <span>100400 XP</span>
+                    <div class="ClubLogoAndPositionUser">
+                        <div class="clubUserLogo">
+                            <img src="./image/Без имени-1.png" alt="">
+                        </div>
+                        <div class="topPositionUserDefault">
+                            <span>#@(_users.IndexOf(user)+1)</span>
+                        </div>
                     </div>
                 </div>
-                <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
-                    <div class="topPositionUser">
-                        <span>#2</span>
-                    </div>
-                </div>
-            </div>
-            <div class="topThreeUser">
-                <div class="userImage">
-                    <img src="./image/Rectangle_20.svg" alt="">
-                </div>
-                <div class="userAboutWrapper">
-                    <div class="nameSurnameUser">
-                        <span>Имя Фамилия</span>
-                    </div>
-                    <div class="xpCountUser">
-                        <span>100400 XP</span>
-                    </div>
-                </div>
-                <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
-                    <div class="topPositionUser">
-                        <span>#3</span>
-                    </div>
-                </div>
-            </div>
-            <div class="topUser">
-                <div class="userImage">
-                    <img src="./image/Rectangle_20.svg" alt="">
-                </div>
-                <div class="userAboutWrapper">
-                    <div class="nameSurnameUser">
-                        <span>Имя Фамилия</span>
-                    </div>
-                    <div class="xpCountDefaultUser">
-                        <span>100400 XP</span>
-                    </div>
-                </div>
-                <div class="ClubLogoAndPositionUser">
-                    <div class="clubUserLogo">
-                        <img src="./image/Без имени-1.png" alt="">
-                    </div>
-                    <div class="topPositionUserDefault">
-                        <span>#4</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    <!-----------------------------------main----------------------------------------->
-    <!-----------------------------------footer----------------------------------------->
-    <div class="px"></div>
-    <footer>
-        <div class="footerSections">
-            <div class="secondSection">
-                <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
-                <hr />
-            </div>
-            <div class="firstSection">
-                <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
-            </div>
-            <div class="thirdSection">
-                <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
-            </div>
-        </div>
-    </footer>
-    <!-----------------------------------footer----------------------------------------->
+            }
+        }
+    </div>
+</main>
+<!-----------------------------------main----------------------------------------->
+@code
+{
+    private List<SmallUserInfo> _users;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await LoadUsers();
+        _users.OrderBy(u => u.XPSum);
+    }
+
+    private async Task LoadUsers()
+    {
+        _users = await _client.GetFromJsonAsync<List<SmallUserInfo>>("/api/Users");
+    }
+
+    private string GetUserClass(SmallUserInfo user)
+    {
+        int number = _users.IndexOf(user);
+        switch (number)
+        {
+            case 0:
+                return "topOneUser";
+            case 1:
+                return "topTwoUser";
+            case 2:
+                return "topThreeUser";
+            default:
+                return "topUser";
+        }
+    }
+
+    private void RedirectToUserId(int id)
+    {
+        _navigation.NavigateTo($"/user/{id}");
+    }
+}

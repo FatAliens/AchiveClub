@@ -11,6 +11,7 @@ public class ApplicationContext : DbContext
     public DbSet<Achievement> Achivements { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<CompletedAchievement> CompletedAchivements { get; set; }
+    public DbSet<Club> Clubs { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -30,7 +31,8 @@ public class ApplicationContext : DbContext
             .RuleFor(u => u.LastName, f => f.Person.LastName)
             .RuleFor(u => u.Email, f => f.Person.Email)
             .RuleFor(u => u.Avatar, f => $"/image/avatars/{f.Random.Number(1, 16)}.jpg")
-            .RuleFor(u => u.Password, f => f.Internet.Password(6));
+            .RuleFor(u => u.Password, f => f.Internet.Password(6))
+            .RuleFor(u => u.ClubRefId, f => 1);
 
         var adminFaker = new Faker<Admin>("ru")
             .RuleFor(u => u.Id, f => adminIdCounter++)
@@ -42,7 +44,7 @@ public class ApplicationContext : DbContext
             .RuleFor(a => a.Xp, f => f.Random.Number(5, 100) * 10)
             .RuleFor(a => a.Title, f => $"{f.Hacker.Verb()} {f.Hacker.Adjective()} {f.Hacker.Noun()}")
             .RuleFor(a => a.Description, f => f.Hacker.Phrase())
-            .RuleFor(a => a.LogoURL, f => f.Image.PicsumUrl(600, 600, imageId: f.Random.Number(1,100)));
+            .RuleFor(a => a.LogoURL, f => f.Image.PicsumUrl(600, 600, imageId: f.Random.Number(1, 100)));
 
         var comletedAchiveFaker = new Faker<CompletedAchievement>("ru")
             .RuleFor(a => a.Id, f => completedAchiveIdCounter++)
@@ -72,6 +74,19 @@ public class ApplicationContext : DbContext
             Id = adminIdCounter++
         });
 
+        modelBuilder.Entity<Club>().HasData(
+            new Club
+            {
+                Id = 1,
+                Title = "Дворец",
+                Description = "Господа, современная методология разработки" +
+                    "не даёт нам иного выбора, кроме определения стандартных подходов." +
+                    "Высокий уровень вовлечения представителей целевой аудитории является" +
+                    "четким доказательством простого факта: консультация с широким активом влечет" +
+                    "за собой процесс внедрения и модернизации существующих финансовых и административных условий.",
+                LogoURL = "./image/dvorec_logo.png",
+                Address = "ул. Долгобродская 24,к. 74-75"
+            });
         modelBuilder.Entity<User>().HasData(users);
         modelBuilder.Entity<Admin>().HasData(admins);
         modelBuilder.Entity<Achievement>().HasData(achiveFaker.Generate(achiveCount));

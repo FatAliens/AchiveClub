@@ -1,3 +1,38 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager _navigation
 
 @Body
+
+<div class="px"></div>
+<footer>
+    <div class="footerSections">
+        <div class="firstSection">
+            <a @onclick="ToProfile"><img src="./image/Rectangle_20.svg" alt=""></a>
+        </div>
+        <div class="secondSection">
+            <a @onclick="ToUsersTop"><img src="./image/Rectangle_20.svg" alt=""></a>
+            <hr />
+        </div>
+        <div class="thirdSection">
+            <a @onclick="ToClubsTop"><img src="./image/Rectangle_20.svg" alt=""></a>
+        </div>
+    </div>
+</footer>
+
+@code
+{
+    private void ToProfile()
+    {
+        _navigation.NavigateTo("/");
+    }
+
+    private void ToUsersTop()
+    {
+        _navigation.NavigateTo("/topusers");
+    }
+
+    private void ToClubsTop()
+    {
+        _navigation.NavigateTo("/topclubs");
+    }
+}

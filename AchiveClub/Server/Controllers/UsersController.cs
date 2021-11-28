@@ -25,9 +25,9 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpGet(Name = "GetAll")]
-        public IEnumerable<UserInfo> GetAll()
+        public IEnumerable<SmallUserInfo> GetAll()
         {
-            return UserToUserInfoMapper.UsersToUserInfo(_dbContext.Users.ToList(), _dbContext.Achivements.ToList());
+            return UserToSmallUserInfoMapper.UsersToSmallUserInfo(_dbContext.Users.Include(u=>u.CompletedAchivements).ThenInclude(a=>a.Achive).ToList());
         }
 
         [HttpGet("{id}", Name = "GetOne")]

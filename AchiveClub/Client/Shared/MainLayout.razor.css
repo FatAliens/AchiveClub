@@ -1,70 +1,267 @@
-.page {
-    position: relative;
+
+
+header {
+    background-color: #0D4E81;
+    border-radius: 0px 0px 50px 50px;
+}
+
+nav {
+    background: white;
+    position: fixed;
+    width: 480px;
+    top: 1010px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5)
+}
+
+.userMenu {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
 }
 
-.main {
-    flex: 1;
+.paragraph {
+    padding: 15px;
 }
 
-.sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+#userParagraph {
+    width: 50px;
 }
 
-.top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    height: 3.5rem;
+.userProfile {
     display: flex;
+}
+
+#userProfileImg {
+    width: 148px;
+    height: 148px;
+    padding: 28px 25px 25px 40px;
+}
+
+.userId {
+    font-family: 'Play', sans-serif;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 14px;
+    color: white;
     align-items: center;
+    margin-top: 38px;
 }
 
-    .top-row ::deep a, .top-row .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
+.heading-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+}
+
+#profileSlogan {
+    display: flex;
+    width: 60%;
+    font-size: 20px;
+    font-family: 'Play', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    color: white;
+    justify-content: flex-end;
+}
+
+.exitLink {
+    display: flex;
+    width: 40%;
+    margin: 0;
+    justify-content: flex-end;
+    padding-right: 1rem;
+    align-items: self-end;
+}
+
+    .exitLink a {
+        font-size: 16px;
+        font-family: 'Play', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        color: white;
     }
 
-    .top-row a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+#locate, #XPLevel, #allTasks, #completedTasks, #nameTask, #reward, #notCompletedTasks {
+    font-family: 'Play', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 19px;
+    margin: 0;
+}
 
-@media (max-width: 640.98px) {
-    .top-row:not(.auth) {
-        display: none;
-    }
+#locateSlogan, #XPSlogan, #tasksSlogan, .infoTask, .notInfoTask {
+    font-family: 'Play', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    color: #818181;
+    padding-top: 5px;
+}
 
-    .top-row.auth {
-        justify-content: space-between;
-    }
+.generalInfo, .completed, .completedTask, .notCompleted, .notCompletedTask {
+    background: white;
+    margin: 30px;
+    padding: 15px;
+    border-radius: 20px;
+}
 
-    .top-row a, .top-row .btn-link {
-        margin-left: 0;
+.aboutTask {
+    width: 250px;
+}
+
+#completed, #notCompleted {
+    margin-bottom: 10px;
+}
+
+#completedTask, #notCompletedTask {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #7BC3FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+}
+
+#notCompletedTask {
+    background: white;
+}
+
+#infoTask {
+    color: white;
+}
+
+#logoTask {
+    width: 60px;
+}
+
+#clubName {
+    color: #0D4E81;
+}
+
+
+#hr {
+    background: #818181;
+}
+
+#markUp, .markUpRed {
+    margin: 0;
+    font-family: 'Play', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    border: 1px solid #0D4E81;
+    padding: 4px;
+    border-radius: 10px;
+    color: #0D4E81;
+}
+
+#markUpRed {
+    border: 1px solid #ff0000;
+    color: #ff0000;
+}
+
+.mark {
+    display: flex;
+    justify-content: space-between;
+}
+
+.taskXP {
+    padding-left: 10px;
+}
+
+.taskImg {
+    padding-right: 10px;
+}
+
+#markUp {
+    height: 20px;
+}
+
+.markUpRed {
+    height: 20px;
+}
+
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.footerSections {
+    display: flex;
+    background: white;
+    width: 100%;
+    justify-content: center;
+    -webkit-box-shadow: 0px -5px 15px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px -5px 15px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px -5px 15px 4px rgba(0, 0, 0, 0.2);
+}
+
+footer img {
+    width: 50px;
+    margin: 10px 30px 5px 30px;
+    object-fit: cover;
+}
+
+.secondSection hr {
+    border-bottom: 5px solid #0D4E81;
+    border-radius: 10px 10px 0px 0px;
+    margin: 0;
+}
+
+.px {
+    width: 100%;
+    height: 75px;
+}
+
+@media(max-width:430px) {
+    #infoTask {
+        text-align: left;
     }
 }
 
-@media (min-width: 641px) {
-    .page {
-        flex-direction: row;
+@media (min-width:1100px) {
+    #infoTask {
+        width: 100%;
+        text-align: left;
     }
 
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
+    .notInfoTask {
+        width: 100%;
+        text-align: left;
     }
 
-    .top-row {
-        position: sticky;
-        top: 0;
-        z-index: 1;
+    #nameTask {
+        text-align: left;
     }
 
-    .main > div {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
+    .aboutTask {
+        width: 100%;
+    }
+
+    .mark {
+        display: unset;
+    }
+
+    .taskXP {
+        width: 100px;
+        text-align: right;
+    }
+
+    .completedTask {
+        cursor: pointer;
+    }
+
+    .notCompletedTask {
+        cursor: pointer;
+    }
+
+    #profileSlogan {
+        width: 50%;
+    }
+
+    .exitLink {
+        width: 50%;
     }
 }

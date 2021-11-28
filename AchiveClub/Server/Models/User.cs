@@ -22,6 +22,9 @@ namespace AchiveClub.Server.Models
         public string Password { get; set; }
         [Required]
         public string Avatar { get; set; }
+        [ForeignKey("Club")]
+        public int ClubRefId { get; set; }
+        public Club Club { get; set; }
 
         public List<CompletedAchievement> CompletedAchivements { get; set; }
 
