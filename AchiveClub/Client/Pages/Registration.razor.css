@@ -45,6 +45,7 @@ main {
     flex-direction: column;
     width: 300px;
     padding: 5%;
+    margin-bottom: 30px;
 }
 
 .registerForm hr {
@@ -99,6 +100,7 @@ main {
     }
 
 .registerForm a {
+    cursor: pointer;
     text-decoration: none;
     color: #8F8F8F;
     font-weight: bold;

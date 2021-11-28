@@ -98,7 +98,7 @@ main {
         cursor: pointer;
     }
 
-.registerForm p a {
+.registerForm p {
     text-decoration: none;
     color: #8F8F8F;
     font-weight: bold;
