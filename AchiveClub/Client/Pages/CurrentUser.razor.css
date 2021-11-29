@@ -34,6 +34,7 @@ nav {
     width: 148px;
     height: 148px;
     padding: 28px 25px 25px 40px;
+    border-radius: 50%;
 }
 
 .userId {
@@ -134,6 +135,8 @@ nav {
 
 #logoTask {
     width: 60px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 #clubName {
