@@ -121,7 +121,7 @@ footer img {
 
 .xpCountUser {
     font-size: 13px;
-    color: white;
+    color: black;
 }
 
 .xpCountDefaultUser {
@@ -148,6 +148,7 @@ footer img {
     display: flex;
     color: white;
     align-items: center;
+    color: black;
 }
 
 .topPositionUserDefault {

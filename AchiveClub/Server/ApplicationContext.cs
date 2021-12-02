@@ -15,15 +15,23 @@ public class ApplicationContext : DbContext
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        int userIdCounter = 1, adminIdCounter = 1, achiveIdCounter = 1, completedAchiveIdCounter = 1;
+        int userIdCounter = 1,
+            adminIdCounter = 1,
+            achiveIdCounter = 1,
+            completedAchiveIdCounter = 1,
+            clubsIdCounter = 1;
 
-        int usersCount = 20, achiveCount = 10, adminsCount = 5, completedAchiveCount = 100;
+        int usersCount = 20,
+            achiveCount = 10,
+            adminsCount = 5,
+            completedAchiveCount = 100,
+            clubsCount = 5;
 
         var userFaker = new Faker<User>("ru")
             .RuleFor(u => u.Id, f => userIdCounter++)
@@ -32,7 +40,7 @@ public class ApplicationContext : DbContext
             .RuleFor(u => u.Email, f => f.Person.Email)
             .RuleFor(u => u.Avatar, f => $"/image/avatars/{f.Random.Number(1, 16)}.jpg")
             .RuleFor(u => u.Password, f => f.Internet.Password(6))
-            .RuleFor(u => u.ClubRefId, f => 1);
+            .RuleFor(u => u.ClubRefId, f => f.Random.Number(1, clubsCount));
 
         var adminFaker = new Faker<Admin>("ru")
             .RuleFor(u => u.Id, f => adminIdCounter++)
@@ -52,6 +60,23 @@ public class ApplicationContext : DbContext
             .RuleFor(a => a.UserRefId, f => f.Random.Number(1, usersCount))
             .RuleFor(a => a.AdminRefId, f => f.Random.Number(1, adminsCount))
             .RuleFor(a => a.DateOfCompletion, f => f.Date.Recent(60));
+
+        string[] clubTitles =
+        {
+            "Дворец",
+            "Чикаго",
+            "Серебронск",
+            "Пушкари",
+            "Рио-Де-Шабанейро",
+            "Киберфлот"
+        };
+
+        var clubFaker = new Faker<Club>("ru")
+            .RuleFor(a => a.Id, f => clubsIdCounter++)
+            .RuleFor(a => a.Title, f => f.PickRandom(clubTitles))
+            .RuleFor(a => a.Description, f => f.Lorem.Sentences(4))
+            .RuleFor(a => a.Address, f => f.Address.FullAddress())
+            .RuleFor(a => a.LogoURL, f => "image/dvorec_logo.png");
 
         var users = userFaker.Generate(usersCount);
 
@@ -75,19 +100,7 @@ public class ApplicationContext : DbContext
             Id = adminIdCounter++
         });
 
-        modelBuilder.Entity<Club>().HasData(
-            new Club
-            {
-                Id = 1,
-                Title = "Дворец",
-                Description = "Господа, современная методология разработки" +
-                    "не даёт нам иного выбора, кроме определения стандартных подходов." +
-                    "Высокий уровень вовлечения представителей целевой аудитории является" +
-                    "четким доказательством простого факта: консультация с широким активом влечет" +
-                    "за собой процесс внедрения и модернизации существующих финансовых и административных условий.",
-                LogoURL = "./image/dvorec_logo.png",
-                Address = "ул. Долгобродская 24,к. 74-75"
-            });
+        modelBuilder.Entity<Club>().HasData(clubFaker.Generate(clubsCount));
         modelBuilder.Entity<User>().HasData(users);
         modelBuilder.Entity<Admin>().HasData(admins);
         modelBuilder.Entity<Achievement>().HasData(achiveFaker.Generate(achiveCount));

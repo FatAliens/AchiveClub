@@ -7,7 +7,7 @@ namespace AchiveClub.Server.Mappers
 {
     static public class UserToUserInfoMapper
     {
-        static public UserInfo UserToUserInfo(User user, List<Achievement> achievements)
+        static public UserInfo Map(User user, List<Achievement> achievements)
         {
             var achivementsInfo = new List<AchiveInfo>();
 

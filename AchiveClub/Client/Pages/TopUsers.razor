@@ -50,7 +50,6 @@
     protected async override Task OnInitializedAsync()
     {
         await LoadUsers();
-        _users.OrderBy(u => u.XPSum);
     }
 
     private async Task LoadUsers()

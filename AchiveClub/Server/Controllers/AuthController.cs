@@ -35,7 +35,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            return UserToUserInfoMapper.UserToUserInfo(user, _dbContext.Achivements.ToList());
+            return UserToUserInfoMapper.Map(user, _dbContext.Achivements.ToList());
         }
 
         [HttpPost("register", Name = "Register")]

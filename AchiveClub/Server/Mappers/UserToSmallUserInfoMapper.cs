@@ -7,19 +7,19 @@ namespace AchiveClub.Server.Mappers
 {
     public class UserToSmallUserInfoMapper
     {
-        static public List<SmallUserInfo> UsersToSmallUserInfo(List<User> users)
+        static public List<SmallUserInfo> Map(List<User> users)
         {
             var usersInfo = new List<SmallUserInfo>();
 
             foreach (var user in users)
             {
-                usersInfo.Add(UserToSmallUserInfo(user));
+                usersInfo.Add(Map(user));
             }
 
             return usersInfo;
         }
 
-        static public SmallUserInfo UserToSmallUserInfo(User user)
+        static public SmallUserInfo Map(User user)
         {
 
             var userInfo = new SmallUserInfo

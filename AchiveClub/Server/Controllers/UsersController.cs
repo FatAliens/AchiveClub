@@ -24,16 +24,21 @@ namespace AchiveClub.Server.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet(Name = "GetAll")]
+        [HttpGet(Name = "GetAllUsers")]
         public IEnumerable<SmallUserInfo> GetAll()
         {
-            return UserToSmallUserInfoMapper.UsersToSmallUserInfo(_dbContext.Users.Include(u=>u.CompletedAchivements).ThenInclude(a=>a.Achive).ToList());
+            return UserToSmallUserInfoMapper
+                .Map(_dbContext.Users
+                    .Include(u => u.CompletedAchivements)
+                    .ThenInclude(a => a.Achive)
+                    .ToList())
+                .OrderByDescending(u => u.XPSum);
         }
 
-        [HttpGet("{id}", Name = "GetOne")]
+        [HttpGet("{id}", Name = "GetOneUser")]
         public UserInfo GetOne(int id)
         {
-            var user =  UserToUserInfoMapper.UserToUserInfo(_dbContext.Users.Where(u => u.Id == id).Include(u=>u.CompletedAchivements).First(), _dbContext.Achivements.ToList());
+            var user = UserToUserInfoMapper.Map(_dbContext.Users.Where(u => u.Id == id).Include(u => u.CompletedAchivements).First(), _dbContext.Achivements.ToList());
             return user;
         }
 
