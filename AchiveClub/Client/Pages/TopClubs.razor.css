@@ -56,36 +56,36 @@ footer img {
     margin: 15px;
 }
 
-.topOneUser {
+.topOneClub {
     background: linear-gradient(180deg, #EDCF33 78.44%, #DAAA30 100%);
     border-radius: 20px;
     display: flex;
     padding: 15px;
 }
-.topOneUser:hover {
+    .topOneClub:hover {
+        cursor: pointer;
+    }
+.topTwoClub:hover {
     cursor: pointer;
 }
-.topTwoUser:hover {
+.topThreeClub:hover {
     cursor: pointer;
 }
-.topThreeUser:hover {
-    cursor: pointer;
-}
-.topTwoUser {
+.topTwoClub {
     background: linear-gradient(180deg, #A7A7A7 0%, #D1D1CF 25.31%);
     border-radius: 20px;
     display: flex;
     padding: 15px;
     margin-top: 15px;
 }
-.topThreeUser {
+.topThreeClub {
     background: linear-gradient(180deg, #E68F3F 73.23%, #BE7532 100%);
     border-radius: 20px;
     display: flex;
     padding: 15px;
     margin-top: 15px;
 }
-.topUser {
+.topClub {
     background: #FFFFFF;
     border-radius: 20px;
     display: flex;
