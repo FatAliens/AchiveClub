@@ -1,0 +1,31 @@
+﻿@inject NavigationManager _navigation
+@inject LoginService _login
+
+@if(_login.IsAuthorized)
+{
+    @ChildContent
+}
+else
+{
+    if(true@*LocalPath == "/login" || LocalPath == "/registration"*@)
+    {
+        @ChildContent
+    }
+    else
+    {
+        Redirect();
+    }
+}
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public string LocalPath => (new Uri(_navigation.Uri)).LocalPath;
+
+    private void Redirect()
+    {
+        _navigation.NavigateTo("/login");
+    }
+}

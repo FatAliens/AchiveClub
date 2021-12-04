@@ -1,5 +1,6 @@
 ﻿@page "/topclubs"
 @using AchiveClub.Shared.DTO
+@layout MainLayout
 @inject HttpClient _client
 @inject NavigationManager _navigation
 
@@ -40,7 +41,7 @@
 </main>
 <!-----------------------------------main----------------------------------------->
 @code {
-    private List<SmallClubInfo> _clubs;
+    private List<SmallClubInfo> _clubs = new List<SmallClubInfo>();
 
     protected async override Task OnInitializedAsync()
     {

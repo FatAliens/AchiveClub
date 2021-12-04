@@ -1,5 +1,6 @@
 ﻿@page "/topusers"
 @using AchiveClub.Shared.DTO
+@layout MainLayout
 @inject HttpClient _client
 @inject NavigationManager _navigation
 
@@ -31,7 +32,7 @@
                     </div>
                     <div class="ClubLogoAndPositionUser">
                         <div class="clubUserLogo">
-                            <img src="./image/Без имени-1.png" alt="">
+                            <img src=@user.ClubIcon alt="">
                         </div>
                         <div class="topPositionUserDefault">
                             <span>#@(_users.IndexOf(user)+1)</span>

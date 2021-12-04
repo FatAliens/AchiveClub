@@ -30,7 +30,10 @@ namespace AchiveClub.Server.Mappers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Avatar = user.Avatar,
-                Achivements = achivementsInfo
+                Achivements = achivementsInfo,
+                ClubTitle = user.Club.Title,
+                ClubAddress = user.Club.Address,
+                ClubIcon = user.Club.LogoURL
             };
 
             return userInfo;

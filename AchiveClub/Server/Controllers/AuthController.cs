@@ -29,7 +29,11 @@ namespace AchiveClub.Server.Controllers
             User user;
             try
             {
-                user = _dbContext.Users.Where(u => u.Email == loginParams.Email && u.Password == loginParams.Password).Include(u => u.CompletedAchivements).First();
+                user = _dbContext.Users
+                    .Where(u => u.Email == loginParams.Email && u.Password == loginParams.Password)
+                    .Include(u => u.Club)
+                    .Include(u => u.CompletedAchivements)
+                    .First();
             }
             catch (Exception ex)
             {

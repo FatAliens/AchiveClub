@@ -204,7 +204,7 @@ footer img {
     object-fit: cover;
 }
 
-.secondSection hr {
+hr {
     border-bottom: 5px solid #0D4E81;
     border-radius: 10px 10px 0px 0px;
     margin: 0;

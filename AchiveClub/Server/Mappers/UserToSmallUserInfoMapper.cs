@@ -28,7 +28,8 @@ namespace AchiveClub.Server.Mappers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Avatar = user.Avatar,
-                XPSum = user.CompletedAchivements.Sum(a => a.Achive.Xp)
+                XPSum = user.CompletedAchivements.Sum(a => a.Achive.Xp),
+                ClubIcon = user.Club.LogoURL
             };
 
             return userInfo;

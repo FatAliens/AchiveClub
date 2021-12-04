@@ -8,19 +8,32 @@
     <div class="footerSections">
         <div class="firstSection">
             <a @onclick="ToProfile"><img src="./image/Rectangle_20.svg" alt=""></a>
+            @if(LocalPath == "/")
+            {
+                <hr />
+            }
         </div>
         <div class="secondSection">
             <a @onclick="ToUsersTop"><img src="./image/Rectangle_20.svg" alt=""></a>
-            <hr />
+            @if(LocalPath == "/topusers")
+            {
+                <hr />
+            }
         </div>
         <div class="thirdSection">
             <a @onclick="ToClubsTop"><img src="./image/Rectangle_20.svg" alt=""></a>
+            @if(LocalPath == "/topclubs")
+            {
+                <hr />
+            }
         </div>
     </div>
 </footer>
 
 @code
 {
+    public string LocalPath => (new Uri(_navigation.Uri)).LocalPath;
+
     private void ToProfile()
     {
         _navigation.NavigateTo("/");

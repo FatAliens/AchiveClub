@@ -12,6 +12,7 @@ namespace AchiveClub.Shared.DTO
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Avatar { get; set; }
+        public string ClubIcon { get; set; }
         public int XPSum { get; set; }
     }
 }

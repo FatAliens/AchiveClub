@@ -29,6 +29,7 @@ namespace AchiveClub.Server.Controllers
         {
             return UserToSmallUserInfoMapper
                 .Map(_dbContext.Users
+                    .Include(u => u.Club)
                     .Include(u => u.CompletedAchivements)
                     .ThenInclude(a => a.Achive)
                     .ToList())
@@ -38,7 +39,13 @@ namespace AchiveClub.Server.Controllers
         [HttpGet("{id}", Name = "GetOneUser")]
         public UserInfo GetOne(int id)
         {
-            var user = UserToUserInfoMapper.Map(_dbContext.Users.Where(u => u.Id == id).Include(u => u.CompletedAchivements).First(), _dbContext.Achivements.ToList());
+            var user = UserToUserInfoMapper
+                .Map(_dbContext.Users
+                    .Where(u => u.Id == id)
+                    .Include(u => u.Club)
+                    .Include(u => u.CompletedAchivements)
+                    .First(),
+                    _dbContext.Achivements.ToList());
             return user;
         }
 

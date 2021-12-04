@@ -1,5 +1,7 @@
-﻿@page "/topclubsilver"
-@inject NavigationManager Nav
+﻿@page "/club/{clubidparam}"
+@inject HttpClient _client
+@inject NavigationManager _navigation
+
 <header>
     <div class="heading-wrapper">
         <div id="profileSlogan">
@@ -10,8 +12,8 @@
             <span><b>«Дворец»</b></span>
         </div>
         <div class="clubPositionLogo">
-            <span id="clubPosition">#2</span>
-            <img src="./image/Без имени-1.png" alt="">
+            <span id="clubPosition">#3</span>
+            <img src="./image/dvorec_logo.png" alt="">
         </div>
     </div>
 </header>
@@ -105,8 +107,11 @@
 </footer>
 <!-----------------------------------footer----------------------------------------->
 @code {
+    [Parameter]
+    public string ClubIdParam { get; set; }
+
     public void TopClubs()
     {
-        Nav.NavigateTo("/topclubs");
+        _navigation.NavigateTo("/topclubs");
     }
 }
