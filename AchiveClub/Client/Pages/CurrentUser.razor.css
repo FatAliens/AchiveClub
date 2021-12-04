@@ -107,10 +107,6 @@ nav {
     border-radius: 20px;
 }
 
-.aboutTask {
-    width: 250px;
-}
-
 #completed, #notCompleted {
     margin-bottom: 10px;
 }
@@ -127,6 +123,10 @@ nav {
 
 #notCompletedTask {
     background: white;
+}
+
+.aboutTask {
+    width: 700px;
 }
 
 #infoTask {

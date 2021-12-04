@@ -13,121 +13,6 @@ nav {
     box-shadow: 0 0 10px rgba(0,0,0,0.5)
 }
 
-.userMenu {
-    display: flex;
-    justify-content: space-around;
-}
-
-.paragraph {
-    padding: 15px;
-}
-
-#userParagraph {
-    width: 50px;
-}
-
-.userProfile {
-    display: flex;
-}
-
-#userProfileImg {
-    width: 148px;
-    height: 148px;
-    padding: 28px 25px 25px 40px;
-}
-
-.userId {
-    font-family: 'Play', sans-serif;
-    font-style: normal;
-    font-weight: lighter;
-    font-size: 14px;
-    color: white;
-    align-items: center;
-    margin-top: 38px;
-}
-
-.heading-wrapper {
-    display: flex;
-    justify-content: center;
-    padding-top: 15px;
-}
-
-#profileSlogan {
-    display: flex;
-    width: 60%;
-    font-size: 20px;
-    font-family: 'Play', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    color: white;
-    justify-content: flex-end;
-}
-
-.exitLink {
-    display: flex;
-    width: 40%;
-    margin: 0;
-    justify-content: flex-end;
-    padding-right: 1rem;
-    align-items: self-end;
-}
-
-    .exitLink a {
-        font-size: 16px;
-        font-family: 'Play', sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: none;
-        color: white;
-    }
-
-#locate, #XPLevel, #allTasks, #completedTasks, #nameTask, #reward, #notCompletedTasks {
-    font-family: 'Play', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 19px;
-    margin: 0;
-}
-
-#locateSlogan, #XPSlogan, #tasksSlogan, .infoTask, .notInfoTask {
-    font-family: 'Play', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    color: #818181;
-    padding-top: 5px;
-}
-
-.generalInfo, .completed, .completedTask, .notCompleted, .notCompletedTask {
-    background: white;
-    margin: 30px;
-    padding: 15px;
-    border-radius: 20px;
-}
-
-.aboutTask {
-    width: 250px;
-}
-
-#completed, #notCompleted {
-    margin-bottom: 10px;
-}
-
-#completedTask, #notCompletedTask {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background: #7BC3FF;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-}
-
-#notCompletedTask {
-    background: white;
-}
-
 #infoTask {
     color: white;
 }
@@ -145,43 +30,6 @@ nav {
     background: #818181;
 }
 
-#markUp, .markUpRed {
-    margin: 0;
-    font-family: 'Play', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    border: 1px solid #0D4E81;
-    padding: 4px;
-    border-radius: 10px;
-    color: #0D4E81;
-}
-
-#markUpRed {
-    border: 1px solid #ff0000;
-    color: #ff0000;
-}
-
-.mark {
-    display: flex;
-    justify-content: space-between;
-}
-
-.taskXP {
-    padding-left: 10px;
-}
-
-.taskImg {
-    padding-right: 10px;
-}
-
-#markUp {
-    height: 20px;
-}
-
-.markUpRed {
-    height: 20px;
-}
-
 footer {
     width: 100%;
     position: fixed;
@@ -196,6 +44,18 @@ footer {
     -webkit-box-shadow: 0px -5px 15px 4px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0px -5px 15px 4px rgba(0, 0, 0, 0.2);
     box-shadow: 0px -5px 15px 4px rgba(0, 0, 0, 0.2);
+}
+
+.firstSection img{
+    cursor: pointer;
+}
+
+.secondSection img{
+    cursor: pointer;
+}
+
+.thirdSection img{
+    cursor: pointer;
 }
 
 footer img {
@@ -264,4 +124,12 @@ hr {
     .exitLink {
         width: 50%;
     }
+}
+
+.hr-hidden hr{
+    display: none;
+}
+
+.hr-visible hr {
+    display: block;
 }
