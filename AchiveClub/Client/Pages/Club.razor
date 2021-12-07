@@ -1,4 +1,5 @@
 ﻿@page "/club/{clubidparam}"
+@using AchiveClub.Shared.DTO
 @inject HttpClient _client
 @inject NavigationManager _navigation
 
@@ -6,14 +7,14 @@
     <div class="heading-wrapper">
         <div id="profileSlogan">
             <div id="arrowExit">
-                <a @onclick="()=>TopClubs()"><img src="./image/left-chevron.png" alt=""></a>
+                <a href="topclubs"><img src="./image/left-chevron.png" alt=""></a>
             </div>
             <span id="club">Клуб</span>
-            <span><b>«Дворец»</b></span>
+            <span><b>@_club.Title</b></span>
         </div>
         <div class="clubPositionLogo">
-            <span id="clubPosition">#3</span>
-            <img src="./image/dvorec_logo.png" alt="">
+            <span id="clubPosition">#@_club.Position</span>
+            <img src="@_club.LogoURL" alt="">
         </div>
     </div>
 </header>
@@ -21,97 +22,66 @@
     <div class="historyClub">
         <h3>История клуба:</h3>
         <p id="textHistoryClub">
-            Господа, современная методология разработки не даёт нам иного выбора, кроме
-            определения стандартных
-            подходов. Высокий уровень вовлечения представителей целевой аудитории является четким доказательством
-            простого факта: консультация с широким активом влечет за собой процесс внедрения и модернизации
-            существующих финансовых и административных условий.
+            @_club.Description
         </p>
-        <p id="adressHistoryClub">ул. Долгобродская 24,к. 74-75</p>
+        <p id="adressHistoryClub">@_club.Address</p>
     </div>
     <div class="topThreeUsers">
         <div class="topThreeUsersHead">
-            <h3>Топ <b>3</b> игроков: </h3>
+            <h3>Топ <b>@_club.Users.Count</b> игроков: </h3>
         </div>
-        <div class="topOneUser">
-            <div class="userImage">
-                <img src="./image/Rectangle_20.svg" alt="">
-            </div>
-            <div class="userAboutWrapper">
-                <div class="nameSurnameUser">
-                    <span>Имя Фамилия</span>
+        @foreach (var user in _club.Users)
+        {
+            <div class="@GetUserClass(user)">
+                <div class="userImage">
+                    <img src="@user.Avatar" alt="">
                 </div>
-                <div class="xpCountUser">
-                    <span>100400 XP</span>
+                <div class="userAboutWrapper">
+                    <div class="nameSurnameUser">
+                        <span>@user.FirstName @user.LastName</span>
+                    </div>
+                    <div class="xpCountUser">
+                        <span>@user.XPSum XP</span>
+                    </div>
                 </div>
-            </div>
-            <div class="ClubLogoAndPositionUser">
-                <div class="topPositionUser">
-                    <span>#1</span>
-                </div>
-            </div>
-        </div>
-        <div class="topTwoUser">
-            <div class="userImage">
-                <img src="./image/Rectangle_20.svg" alt="">
-            </div>
-            <div class="userAboutWrapper">
-                <div class="nameSurnameUser">
-                    <span>Имя Фамилия</span>
-                </div>
-                <div class="xpCountUser">
-                    <span>100400 XP</span>
+                <div class="ClubLogoAndPositionUser">
+                    <div class="topPositionUser">
+                        <span>#@(_club.Users.IndexOf(user)+1)</span>
+                    </div>
                 </div>
             </div>
-            <div class="ClubLogoAndPositionUser">
-                <div class="topPositionUser">
-                    <span>#2</span>
-                </div>
-            </div>
-        </div>
-        <div class="topThreeUser">
-            <div class="userImage">
-                <img src="./image/Rectangle_20.svg" alt="">
-            </div>
-            <div class="userAboutWrapper">
-                <div class="nameSurnameUser">
-                    <span>Имя Фамилия</span>
-                </div>
-                <div class="xpCountUser">
-                    <span>100400 XP</span>
-                </div>
-            </div>
-            <div class="ClubLogoAndPositionUser">
-                <div class="topPositionUser">
-                    <span>#3</span>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </main>
-<!-----------------------------------footer----------------------------------------->
-<div class="px"></div>
-<footer>
-    <div class="footerSections">
-        <div class="secondSection">
-            <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
-            <hr />
-        </div>
-        <div class="firstSection">
-            <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
-        </div>
-        <div class="thirdSection">
-            <a href="#"><img src="./image/Rectangle_20.svg" alt=""></a>
-        </div>
-    </div>
-</footer>
-<!-----------------------------------footer----------------------------------------->
 @code {
     [Parameter]
     public string ClubIdParam { get; set; }
 
-    public void TopClubs()
+    private ClubInfo _club;
+
+    protected async override Task OnInitializedAsync()
     {
-        _navigation.NavigateTo("/topclubs");
+        await UpdateClubAsync();
+    }
+
+    private async Task UpdateClubAsync()
+    {
+        _club = await _client.GetFromJsonAsync<ClubInfo>($"/api/Clubs/{ClubIdParam}");
+    }
+
+    private string GetUserClass(SmallUserInfo user)
+    {
+        int number = _club.Users.IndexOf(user);
+        switch (number)
+        {
+            case 0:
+                return "topOneUser";
+            case 1:
+                return "topTwoUser";
+            case 2:
+                return "topThreeUser";
+            default:
+                return "topUser";
+        }
     }
 }

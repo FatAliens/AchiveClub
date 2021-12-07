@@ -26,20 +26,28 @@ namespace AchiveClub.Server.Controllers
         {
             return ClubToSmallClubInfoMapper
                 .Map(_dbContext.Clubs
-                    .Include(c=>c.Users)
-                    .ThenInclude(u=>u.CompletedAchivements)
-                    .ThenInclude(a=>a.Achive)
-                    .ToList()).OrderByDescending(c=>c.AvgXP);
+                    .Include(c => c.Users)
+                    .ThenInclude(u => u.CompletedAchivements)
+                    .ThenInclude(a => a.Achive)
+                    .ToList()).OrderByDescending(c => c.AvgXP);
         }
 
         [HttpGet("{id}", Name = "GetOneClub")]
         public ClubInfo GetOne(int id)
         {
-            return ClubToClubInfoMapper
+            var sortedclubs = ClubToSmallClubInfoMapper
                 .Map(_dbContext.Clubs
-                    .Where(c => c.Id == id)
                     .Include(c => c.Users)
-                    .First());
+                    .ThenInclude(u => u.CompletedAchivements)
+                    .ThenInclude(a => a.Achive)
+                    .ToList())
+                .OrderByDescending(c => c.AvgXP)
+                .ToList();
+
+            int position = sortedclubs.IndexOf(sortedclubs.Where(c => c.Id == id).First()) + 1;
+
+            return ClubToClubInfoMapper.Map(_dbContext.Clubs.Where(c => c.Id == id).First(), position);
+            
         }
     }
 }

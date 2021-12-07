@@ -9,6 +9,7 @@ namespace AchiveClub.Shared.DTO
     public class ClubInfo
     {
         public int Id { get; set; }
+        public int Position { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
