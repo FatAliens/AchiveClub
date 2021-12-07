@@ -7,22 +7,22 @@
 <footer>
     <div class="footerSections">
         <div class="firstSection">
-            <a @onclick="ToProfile"><img src="./image/Rectangle_20.svg" alt=""></a>
-            @if(LocalPath == "/")
+            <a href="@_profilePath"><img src="./image/Rectangle_20.svg" alt=""></a>
+            @if(LocalPath == _profilePath)
             {
                 <hr />
             }
         </div>
         <div class="secondSection">
-            <a @onclick="ToUsersTop"><img src="./image/Rectangle_20.svg" alt=""></a>
-            @if(LocalPath == "/topusers")
+            <a href="@_topUsersPath"><img src="./image/Rectangle_20.svg" alt=""></a>
+            @if(LocalPath == _topUsersPath)
             {
                 <hr />
             }
         </div>
         <div class="thirdSection">
-            <a @onclick="ToClubsTop"><img src="./image/Rectangle_20.svg" alt=""></a>
-            @if(LocalPath == "/topclubs")
+            <a href="@_topClubsPath"><img src="./image/Rectangle_20.svg" alt=""></a>
+            @if(LocalPath == _topClubsPath)
             {
                 <hr />
             }
@@ -34,18 +34,7 @@
 {
     public string LocalPath => (new Uri(_navigation.Uri)).LocalPath;
 
-    private void ToProfile()
-    {
-        _navigation.NavigateTo("/");
-    }
-
-    private void ToUsersTop()
-    {
-        _navigation.NavigateTo("/topusers");
-    }
-
-    private void ToClubsTop()
-    {
-        _navigation.NavigateTo("/topclubs");
-    }
+    private const string _profilePath = "/";
+    private const string _topUsersPath = "/topusers";
+    private const string _topClubsPath = "/topclubs";
 }

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <PackageProjectUrl>http://localhost:43567</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
