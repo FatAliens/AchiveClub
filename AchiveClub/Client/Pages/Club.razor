@@ -3,7 +3,7 @@
 @inject HttpClient _client
 @inject NavigationManager _navigation
 
-<header>
+<header class="@GetClubClass()">
     <div class="heading-wrapper">
         <div id="profileSlogan">
             <div id="arrowExit">
@@ -13,7 +13,7 @@
             <span><b>@_club.Title</b></span>
         </div>
         <div class="clubPositionLogo">
-            <span id="clubPosition">#@_club.Position</span>
+            <span id="clubPosition">#@(_club.Position+1)</span>
             <img src="@_club.LogoURL" alt="">
         </div>
     </div>
@@ -82,6 +82,22 @@
                 return "topThreeUser";
             default:
                 return "topUser";
+        }
+    }
+
+    private string GetClubClass()
+    {
+        int number = _club.Position;
+        switch (number)
+        {
+            case 0:
+                return "topOneClub";
+            case 1:
+                return "topTwoClub";
+            case 2:
+                return "topThreeClub";
+            default:
+                return "topClub";
         }
     }
 }

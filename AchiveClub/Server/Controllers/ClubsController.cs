@@ -44,7 +44,7 @@ namespace AchiveClub.Server.Controllers
                 .OrderByDescending(c => c.AvgXP)
                 .ToList();
 
-            int position = sortedclubs.IndexOf(sortedclubs.Where(c => c.Id == id).First()) + 1;
+            int position = sortedclubs.IndexOf(sortedclubs.Where(c => c.Id == id).First());
 
             return ClubToClubInfoMapper.Map(_dbContext.Clubs.Where(c => c.Id == id).First(), position);
             

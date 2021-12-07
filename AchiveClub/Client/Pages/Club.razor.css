@@ -1,6 +1,18 @@
 ﻿header {
-    background: linear-gradient(180deg, #A7A7A7 0%, #D1D1CF 25.31%);
     border-radius: 0px 0px 50px 50px;
+}
+
+.topOneClub {
+    background: linear-gradient(180deg, #EDCF33 75.31%, #DAAA30 94.58%);
+}
+.topTwoClub {
+    background: linear-gradient(180deg, #A7A7A7 0%, #D1D1CF 25.31%);
+}
+.topThreeClub {
+    background: linear-gradient(180deg, #E68F3F 73.23%, #BE7532 100%);
+}
+.topClub {
+    background: linear-gradient(180deg, #A7A7A7 0%, #D1D1CF 25.31%);
 }
 
 #arrowExit a img:hover {
