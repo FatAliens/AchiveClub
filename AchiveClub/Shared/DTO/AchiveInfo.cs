@@ -13,6 +13,23 @@ namespace AchiveClub.Shared.DTO
         public string Title { get; set; }
         public string Description { get; set; }
         public string LogoURL { get; set; }
-        public bool Completed { get; set; }
+
+        public string XpString
+        {
+            get => Xp.ToString();
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    Xp = 0;
+                    return;
+                }
+
+                if (int.TryParse(value, out int result))
+                {
+                    Xp = result;
+                }
+            }
+        }
     }
 }

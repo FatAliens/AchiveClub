@@ -9,11 +9,11 @@ namespace AchiveClub.Server.Mappers
     {
         static public UserInfo Map(User user, List<Achievement> achievements)
         {
-            var achivementsInfo = new List<AchiveInfo>();
+            var achivementsInfo = new List<UserAchiveInfo>();
 
             foreach (var achive in achievements)
             {
-                achivementsInfo.Add(new AchiveInfo()
+                achivementsInfo.Add(new UserAchiveInfo()
                 {
                     Id = achive.Id,
                     Title = achive.Title,

@@ -26,6 +26,7 @@ input {
     font-family: 'Play', sans-serif;
     height: 25px;
     padding: 0;
+    cursor: pointer;
 }
 
 /*#buttonCancel {

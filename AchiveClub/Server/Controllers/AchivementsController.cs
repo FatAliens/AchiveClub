@@ -1,9 +1,10 @@
 ﻿using System;
-using AchiveClub.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using AchiveClub.Server.Models;
+using AchiveClub.Server.Mappers;
 using AchiveClub.Shared.DTO;
 
 namespace AchiveClub.Server.Controllers
@@ -52,17 +53,19 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Achievement> Get()
+        public IEnumerable<AchiveInfo> GetAll()
         {
-            return _dbContext.Achivements.ToList();
+            return _dbContext.Achivements
+                .Select(a => AchiveToAchiveInfoMapper.Map(a))
+                .ToList();
         }
 
         [HttpPost]
-        public ActionResult Post(Achievement achive)
+        public ActionResult Post(AchiveInfo achiveInfo)
         {
             try
             {
-                _dbContext.Achivements.Add(achive);
+                _dbContext.Achivements.Add(AchiveToAchiveInfoMapper.Revert(achiveInfo));
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)
@@ -73,11 +76,11 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpPut]
-        public ActionResult Put(Achievement achive)
+        public ActionResult Put(AchiveInfo achiveInfo)
         {
             try
             {
-                _dbContext.Achivements.Update(achive);
+                _dbContext.Achivements.Update(AchiveToAchiveInfoMapper.Revert(achiveInfo));
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)
