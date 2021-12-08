@@ -1,1 +1,4 @@
-﻿
+﻿@page "/admin"
+@inject AdminLoginService _login
+
+<h1>Admin @_login.CurrentAdmin.Name</h1>

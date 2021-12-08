@@ -32,7 +32,7 @@ namespace AchiveClub.Server.Controllers
             {
                 return BadRequest("User not found!");
             }
-            if (!_dbContext.Admins.Where(a => a.Key == completeAchiveParams.AdminKey).Any())
+            if (!_dbContext.Supervisors.Where(a => a.Key == completeAchiveParams.SupervisorKey).Any())
             {
                 return BadRequest("Admin key invalid!");
             }
@@ -41,7 +41,7 @@ namespace AchiveClub.Server.Controllers
             {
                 User = _dbContext.Users.First(u => u.Id == completeAchiveParams.UserId),
                 Achive = _dbContext.Achivements.First(a => a.Id == completeAchiveParams.AchiveId),
-                Admin = _dbContext.Admins.First(a => a.Key == completeAchiveParams.AdminKey),
+                Supervisor = _dbContext.Supervisors.First(a => a.Key == completeAchiveParams.SupervisorKey),
                 DateOfCompletion = DateTime.Now
             };
 

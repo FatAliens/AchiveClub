@@ -10,12 +10,13 @@ public class ApplicationContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Achievement> Achivements { get; set; }
     public DbSet<Admin> Admins { get; set; }
+    public DbSet<Supervisor> Supervisors { get; set; }
     public DbSet<CompletedAchievement> CompletedAchivements { get; set; }
     public DbSet<Club> Clubs { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -23,13 +24,15 @@ public class ApplicationContext : DbContext
     {
         int userIdCounter = 1,
             adminIdCounter = 1,
+            supervisorIdCounter = 1,
             achiveIdCounter = 1,
             completedAchiveIdCounter = 1,
             clubsIdCounter = 1;
 
         int usersCount = 20,
             achiveCount = 10,
-            adminsCount = 5,
+            adminsCount = 3,
+            supervisorsCount = 5,
             completedAchiveCount = 100,
             clubsCount = 5;
 
@@ -47,6 +50,11 @@ public class ApplicationContext : DbContext
             .RuleFor(a => a.Name, f => f.Person.FullName)
             .RuleFor(a => a.Key, f => f.Internet.Password(8));
 
+        var supervisorFaker = new Faker<Supervisor>("ru")
+            .RuleFor(u => u.Id, f => supervisorIdCounter++)
+            .RuleFor(a => a.Name, f => f.Person.FullName)
+            .RuleFor(a => a.Key, f => f.Internet.Password(8));
+
         var achiveFaker = new Faker<Achievement>("ru")
             .RuleFor(u => u.Id, f => achiveIdCounter++)
             .RuleFor(a => a.Xp, f => f.Random.Number(5, 100) * 10)
@@ -58,7 +66,7 @@ public class ApplicationContext : DbContext
             .RuleFor(a => a.Id, f => completedAchiveIdCounter++)
             .RuleFor(a => a.AchiveRefId, f => f.Random.Number(1, achiveCount))
             .RuleFor(a => a.UserRefId, f => f.Random.Number(1, usersCount))
-            .RuleFor(a => a.AdminRefId, f => f.Random.Number(1, adminsCount))
+            .RuleFor(a => a.SupervisorRefId, f => f.Random.Number(1, adminsCount))
             .RuleFor(a => a.DateOfCompletion, f => f.Date.Recent(60));
 
         string[] clubTitles =
@@ -100,9 +108,19 @@ public class ApplicationContext : DbContext
             Id = adminIdCounter++
         });
 
+        var supervisors = supervisorFaker.Generate(supervisorsCount);
+
+        supervisors.Add(new Supervisor
+        {
+            Name = "god",
+            Key = "qwerty",
+            Id = supervisorIdCounter++
+        });
+
         modelBuilder.Entity<Club>().HasData(clubFaker.Generate(clubsCount));
         modelBuilder.Entity<User>().HasData(users);
         modelBuilder.Entity<Admin>().HasData(admins);
+        modelBuilder.Entity<Supervisor>().HasData(supervisors);
         modelBuilder.Entity<Achievement>().HasData(achiveFaker.Generate(achiveCount));
         modelBuilder.Entity<CompletedAchievement>().HasData(comletedAchiveFaker.Generate(completedAchiveCount));
     }

@@ -18,8 +18,10 @@ namespace AchiveClub.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<LoginService>();
+            builder.Services.AddScoped<AdminLoginService>();
             builder.Services.AddScoped<RegistrationService>();
 
             builder.Services.AddBlazoredModal();

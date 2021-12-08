@@ -3,56 +3,64 @@
 @inject HttpClient _client
 @inject NavigationManager _navigation
 
-<header class="@GetClubClass()">
-    <div class="heading-wrapper">
-        <div id="profileSlogan">
-            <div id="arrowExit">
-                <a href="topclubs"><img src="./image/left-chevron.png" alt=""></a>
+@if (_club != null)
+{
+    <header class="@GetClubClass()">
+        <div class="heading-wrapper">
+            <div id="profileSlogan">
+                <div id="arrowExit">
+                    <a href="topclubs"><img src="./image/left-chevron.png" alt=""></a>
+                </div>
+                <span id="club">Клуб</span>
+                <span><b>@_club.Title</b></span>
             </div>
-            <span id="club">Клуб</span>
-            <span><b>@_club.Title</b></span>
-        </div>
-        <div class="clubPositionLogo">
-            <span id="clubPosition">#@(_club.Position+1)</span>
-            <img src="@_club.LogoURL" alt="">
-        </div>
-    </div>
-</header>
-<main>
-    <div class="historyClub">
-        <h3>История клуба:</h3>
-        <p id="textHistoryClub">
-            @_club.Description
-        </p>
-        <p id="adressHistoryClub">@_club.Address</p>
-    </div>
-    <div class="topThreeUsers">
-        <div class="topThreeUsersHead">
-            <h3>Топ <b>@_club.Users.Count</b> игроков: </h3>
-        </div>
-        @foreach (var user in _club.Users)
-        {
-            <div class="@GetUserClass(user)">
-                <div class="userImage">
-                    <img src="@user.Avatar" alt="">
-                </div>
-                <div class="userAboutWrapper">
-                    <div class="nameSurnameUser">
-                        <span>@user.FirstName @user.LastName</span>
-                    </div>
-                    <div class="xpCountUser">
-                        <span>@user.XPSum XP</span>
-                    </div>
-                </div>
-                <div class="ClubLogoAndPositionUser">
-                    <div class="topPositionUser">
-                        <span>#@(_club.Users.IndexOf(user)+1)</span>
-                    </div>
-                </div>
+            <div class="clubPositionLogo">
+                <span id="clubPosition">#@(_club.Position+1)</span>
+                <img src="@_club.LogoURL" alt="">
             </div>
-        }
-    </div>
-</main>
+        </div>
+    </header>
+    <main>
+        <div class="historyClub">
+            <h3>История клуба:</h3>
+            <p id="textHistoryClub">
+                @_club.Description
+            </p>
+            <p id="adressHistoryClub">@_club.Address</p>
+        </div>
+        <div class="topThreeUsers">
+            <div class="topThreeUsersHead">
+                <h3>Топ <b>@_club.Users.Count</b> игроков: </h3>
+            </div>
+            @foreach (var user in _club.Users)
+            {
+                <div class="@GetUserClass(user)">
+                    <div class="userImage">
+                        <img src="@user.Avatar" alt="">
+                    </div>
+                    <div class="userAboutWrapper">
+                        <div class="nameSurnameUser">
+                            <span>@user.FirstName @user.LastName</span>
+                        </div>
+                        <div class="xpCountUser">
+                            <span>@user.XPSum XP</span>
+                        </div>
+                    </div>
+                    <div class="ClubLogoAndPositionUser">
+                        <div class="topPositionUser">
+                            <span>#@(_club.Users.IndexOf(user)+1)</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+}
+else
+{
+    <h1>Loading...</h1>
+}
+
 @code {
     [Parameter]
     public string ClubIdParam { get; set; }

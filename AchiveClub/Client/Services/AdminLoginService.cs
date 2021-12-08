@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace AchiveClub.Client
 {
-    public class LoginService
+    public class AdminLoginService
     {
-        public UserInfo CurrentUser { get; private set; }
+        public AdminInfo CurrentAdmin { get; private set; }
         public bool IsAuthorized { get; private set; } = false;
 
         private HttpClient _client;
 
-        public LoginService(HttpClient client)
+        public AdminLoginService(HttpClient client)
         {
             _client = client;
         }
@@ -21,11 +21,11 @@ namespace AchiveClub.Client
         {
             try
             {
-                var result = await _client.PostAsJsonAsync<LoginParams>("/api/Auth/login", loginParams);
-                var user = await result.Content.ReadFromJsonAsync<UserInfo>();
-                if(user!=null)
+                var result = await _client.PostAsJsonAsync<LoginParams>("/api/Auth/admin", loginParams);
+                var admin = await result.Content.ReadFromJsonAsync<AdminInfo>();
+                if(admin!=null)
                 {
-                    CurrentUser = user;
+                    CurrentAdmin = admin;
                     IsAuthorized = true;
 
                     return true;
@@ -40,12 +40,12 @@ namespace AchiveClub.Client
             catch
             {
                 return false;
-            }
+            }            
         }
 
         public void Logout()
         {
-            CurrentUser = null;
+            CurrentAdmin = null;
             IsAuthorized = false;
         }
     }

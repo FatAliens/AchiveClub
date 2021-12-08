@@ -136,15 +136,8 @@
 
     protected async override Task OnInitializedAsync()
     {
-        if (!_login.IsAuthorized)
-        {
-            _navigation.NavigateTo("/login");
-        }
-        else
-        {
-            userId = _login.CurrentUser.Id;
-            await UpdateUserAsync();
-        }
+        userId = _login.CurrentUser.Id;
+        await UpdateUserAsync();
     }
 
     private async Task CompleteAchiveAsync(int achivementId)
@@ -159,7 +152,7 @@
                 {
                     UserId = userId,
                     AchiveId = achivementId,
-                    AdminKey = adminKey
+                    SupervisorKey = adminKey
                 };
             await _client.PostAsJsonAsync<CompleteAchiveParams>("/api/Achivements/complete", completeAchiveParams);
             await UpdateUserAsync();

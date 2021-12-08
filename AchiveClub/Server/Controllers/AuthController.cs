@@ -42,6 +42,22 @@ namespace AchiveClub.Server.Controllers
             return UserToUserInfoMapper.Map(user, _dbContext.Achivements.ToList());
         }
 
+        [HttpPost("admin", Name = "Admin")]
+        public ActionResult<AdminInfo> Admin(LoginParams loginParams)
+        {
+            Admin admin;
+            try
+            {
+                admin = _dbContext.Admins
+                    .First(a => a.Name == loginParams.Email && a.Key == loginParams.Password);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return AdminToAdminInfoMapper.Map(admin);
+        }
+
         [HttpPost("register", Name = "Register")]
         public ActionResult Register(RegisterParams registerParams)
         {

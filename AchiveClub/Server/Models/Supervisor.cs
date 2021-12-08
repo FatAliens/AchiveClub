@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AchiveClub.Server.Models
 {
-    public class Admin
+    public class Supervisor
     {
         [Key]
         public int Id { get; set; }
@@ -14,6 +14,13 @@ namespace AchiveClub.Server.Models
 
         [Required]
         public string Key { get; set; }
+
+        public List<CompletedAchievement> CompletedAchivements { get; set; }
+
+        public Supervisor()
+        {
+            CompletedAchivements = new List<CompletedAchievement>();
+        }
 
         public override string ToString()
         {

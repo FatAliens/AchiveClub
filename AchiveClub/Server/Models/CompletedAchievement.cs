@@ -10,8 +10,8 @@ namespace AchiveClub.Server.Models
         public int Id { get; set; }
 
         [ForeignKey(nameof(Admin))]
-        public int AdminRefId { get; set; }       
-        public Admin Admin { get; set; }
+        public int SupervisorRefId { get; set; }       
+        public Supervisor Supervisor { get; set; }
 
         [ForeignKey(nameof(User))]
         public int UserRefId { get; set; }  

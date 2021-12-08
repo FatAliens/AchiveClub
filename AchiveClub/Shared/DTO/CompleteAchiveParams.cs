@@ -10,6 +10,6 @@ namespace AchiveClub.Shared.DTO
     {
         public int AchiveId { get; set; }
         public int UserId { get; set; }
-        public string AdminKey { get; set; }
+        public string SupervisorKey { get; set; }
     }
 }
