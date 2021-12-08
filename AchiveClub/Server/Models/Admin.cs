@@ -13,11 +13,11 @@ namespace AchiveClub.Server.Models
         public string Name { get; set; }
 
         [Required]
-        public string Key { get; set; }
+        public string Password { get; set; }
 
         public override string ToString()
         {
-            return $"[{Key}] {Name}";
+            return $"[{Password}] {Name}";
         }
     }
 }

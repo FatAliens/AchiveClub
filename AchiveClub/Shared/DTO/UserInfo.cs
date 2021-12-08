@@ -15,6 +15,6 @@ namespace AchiveClub.Shared.DTO
         public string ClubTitle { get; set; }
         public string ClubAddress { get; set; }
         public string ClubIcon { get; set; }
-        public List<AchiveInfo> Achivements { get; set; }
+        public List<UserAchiveInfo> Achivements { get; set; }
     }
 }

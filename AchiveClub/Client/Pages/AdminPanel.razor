@@ -1,4 +1,225 @@
 ﻿@page "/admin"
+@using AchiveClub.Shared.DTO
 @inject AdminLoginService _login
+@inject HttpClient _client
 
-<h1>Admin @_login.CurrentAdmin.Name</h1>
+<h1>Admin: @_login.CurrentAdmin.Name</h1>
+
+@if (_achives != null)
+{
+    <button @onclick=AddAchiveAsync>Добавить</button>
+    @if (_achives.Any())
+    {
+        <h3>Достижения</h3>
+        @foreach (var achive in _achives)
+        {
+            <div class="rows">
+                <div class="columns">
+                    <p>#@achive.Id</p>
+                    <input placeholder="Название" type="text" @bind=achive.Title />
+                </div>
+                <textarea placeholder="Описание" type="text" @bind=achive.Description rows=2 />
+                <input placeholder="Количество опыта" type="text" @bind=achive.XpString />
+                <input placeholder="URL иконки" type="text" @bind=achive.LogoURL />
+                <div class="columns">
+                    <button @onclick="()=>EditAchiveAsync(achive)">Сохранить</button>
+                    <button @onclick="()=>DeleteAchiveAsync(achive)">Удалить</button>
+                </div>
+                <hr />
+            </div>
+        }
+    }
+    else
+    {
+        <h3>Список достижений пуст!</h3>
+    }
+}
+else
+{
+    <h3>Загрузка достижений...</h3>
+}
+
+@if (_admins != null)
+{
+    <button @onclick=AddAdminAsync>Добавить</button>
+    @if (_admins.Any())
+    {
+        <h3>Администраторы</h3>
+        @foreach (var admin in _admins)
+        {
+            <div class="rows">
+                <div class="columns">
+                    <p>#@admin.Id</p>
+                    <input placeholder="Полное имя" type="text" @bind=admin.Name />
+                    <input placeholder="Пароль" type="text" @bind=admin.Password />
+                </div>
+                <div class="columns">
+                    <button @onclick="()=>EditAdminAsync(admin)">Сохранить</button>
+                    <button @onclick="()=>DeleteAdminAsync(admin)">Удалить</button>
+                </div>
+                <hr />
+            </div>
+        }
+    }
+    else
+    {
+        <h3>Список администраторов пуст!</h3>
+    }
+}
+else
+{
+    <h3>Загрузка списка администраторов...</h3>
+}
+
+@if (_supervisers != null)
+{
+    <button @onclick=AddSupervisorAsync>Добавить</button>
+    @if (_supervisers.Any())
+    {
+        <h3>Преподаватели</h3>
+        @foreach (var supervisor in _supervisers)
+        {
+            <div class="rows">
+                <div class="columns">
+                    <p>#@supervisor.Id</p>
+                    <input placeholder="Полное имя" type="text" @bind=supervisor.Name />
+                    <input placeholder="Ключ" type="text" @bind=supervisor.Key />
+                </div>
+                <div class="columns">
+                    <button @onclick="()=>EditSupervisorAsync(supervisor)">Сохранить</button>
+                    <button @onclick="()=>DeleteSupervisorAsync(supervisor)">Удалить</button>
+                </div>
+                <hr />
+            </div>
+        }
+    }
+    else
+    {
+        <h3>Список преподавателей пуст!</h3>
+    }
+}
+else
+{
+    <h3>Загрузка списка преподавателей...</h3>
+}
+
+@code
+{
+    private List<AchiveInfo> _achives;
+    private List<AdminInfo> _admins;
+    private List<SupervisorInfo> _supervisers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAchievementsAsync();
+        await GetAdminsAsync();
+        await GetSupervisorsAsync();
+    }
+
+    #region AchiveCRUD
+
+    private async Task GetAchievementsAsync()
+    {
+        _achives = await _client.GetFromJsonAsync<List<AchiveInfo>>("/api/Achivements");
+    }
+
+    private async Task AddAchiveAsync()
+    {
+        var newAchive = new AchiveInfo
+            {
+                Title = "Название",
+                Description = "Описание",
+                Xp = 0,
+                LogoURL = "/image/temp.jpg" //нян-кэт
+            };
+        await _client.PostAsJsonAsync<AchiveInfo>("/api/Achivements", newAchive);
+
+        await GetAchievementsAsync();
+    }
+
+    private async Task EditAchiveAsync(AchiveInfo achive)
+    {
+        await _client.PutAsJsonAsync<AchiveInfo>("/api/Achivements", achive);
+
+        await GetAchievementsAsync();
+    }
+
+    private async Task DeleteAchiveAsync(AchiveInfo achive)
+    {
+        await _client.DeleteAsync($"/api/Achivements/{achive.Id}");
+
+        await GetAchievementsAsync();
+    }
+
+    #endregion AchiveCRUD
+
+    #region AdminCRUD
+
+    private async Task GetAdminsAsync()
+    {
+        _admins = await _client.GetFromJsonAsync<List<AdminInfo>>("/api/Admins");
+    }
+
+    private async Task AddAdminAsync()
+    {
+        var newAdmin = new AdminInfo
+            {
+                Name = "Полное имя",
+                Password = "Пароль"
+            };
+        await _client.PostAsJsonAsync<AdminInfo>("/api/Admins", newAdmin);
+
+        await GetAdminsAsync();
+    }
+
+    private async Task EditAdminAsync(AdminInfo admin)
+    {
+        await _client.PutAsJsonAsync<AdminInfo>("/api/Admins", admin);
+
+        await GetAdminsAsync();
+    }
+
+    private async Task DeleteAdminAsync(AdminInfo admin)
+    {
+        await _client.DeleteAsync($"/api/Admins/{admin.Id}");
+
+        await GetAdminsAsync();
+    }
+
+    #endregion AdminCRUD
+
+    #region SupervisorCRUD
+
+    private async Task GetSupervisorsAsync()
+    {
+        _supervisers = await _client.GetFromJsonAsync<List<SupervisorInfo>>("/api/Supervisors");
+    }
+
+    private async Task AddSupervisorAsync()
+    {
+        var newSupervisor = new SupervisorInfo
+            {
+                Name = "Полное имя",
+                Key = "Ключ"
+            };
+        await _client.PostAsJsonAsync<SupervisorInfo>("/api/Supervisors", newSupervisor);
+
+        await GetSupervisorsAsync();
+    }
+
+    private async Task EditSupervisorAsync(SupervisorInfo supervisor)
+    {
+        await _client.PutAsJsonAsync<SupervisorInfo>("/api/Supervisors", supervisor);
+
+        await GetSupervisorsAsync();
+    }
+
+    private async Task DeleteSupervisorAsync(SupervisorInfo supervisor)
+    {
+        await _client.DeleteAsync($"/api/Supervisors/{supervisor.Id}");
+
+        await GetSupervisorsAsync();
+    }
+
+    #endregion SupervisorCRUD
+}

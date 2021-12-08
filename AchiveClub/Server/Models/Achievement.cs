@@ -21,25 +21,6 @@ namespace AchiveClub.Server.Models
         [Required]
         public string LogoURL { get; set; }
 
-        [NotMapped]
-        public string XpString
-        {
-            get => Xp.ToString();
-            set
-            {
-                if(string.IsNullOrWhiteSpace(value))
-                {
-                    Xp = 0;
-                    return;
-                }
-
-                if(int.TryParse(value, out int result))
-                {
-                    Xp = result;
-                }
-            }
-        }
-
         public List<CompletedAchievement> CompletedAchivements { get; set; }
 
         public Achievement()

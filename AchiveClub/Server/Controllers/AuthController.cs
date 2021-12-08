@@ -49,7 +49,7 @@ namespace AchiveClub.Server.Controllers
             try
             {
                 admin = _dbContext.Admins
-                    .First(a => a.Name == loginParams.Email && a.Key == loginParams.Password);
+                    .First(a => a.Name == loginParams.Email && a.Password == loginParams.Password);
             }
             catch (Exception ex)
             {

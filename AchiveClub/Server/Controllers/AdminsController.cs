@@ -1,9 +1,10 @@
 ﻿using System;
-using AchiveClub.Server.Models;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
+using AchiveClub.Server.Mappers;
+using AchiveClub.Shared.DTO;
 
 namespace AchiveClub.Server.Controllers
 {
@@ -21,17 +22,19 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Admin> Get()
+        public IEnumerable<AdminInfo> GetAll()
         {
-            return _dbContext.Admins.ToList();
+            return _dbContext.Admins
+                .Select(a => AdminToAdminInfoMapper.Map(a))
+                .ToList();
         }
 
         [HttpPost]
-        public ActionResult Post(Admin admin)
+        public ActionResult Post(AdminInfo adminInfo)
         {
             try
             {
-                _dbContext.Admins.Add(admin);
+                _dbContext.Admins.Add(AdminToAdminInfoMapper.Revert(adminInfo));
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)
@@ -42,11 +45,11 @@ namespace AchiveClub.Server.Controllers
         }
 
         [HttpPut]
-        public ActionResult Put(Admin admin)
+        public ActionResult Put(AdminInfo adminInfo)
         {
             try
             {
-                _dbContext.Admins.Update(admin);
+                _dbContext.Admins.Update(AdminToAdminInfoMapper.Revert(adminInfo));
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)

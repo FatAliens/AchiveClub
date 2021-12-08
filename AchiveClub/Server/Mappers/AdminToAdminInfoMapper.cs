@@ -14,10 +14,18 @@ namespace AchiveClub.Server.Mappers
             {
                 Id = admin.Id,
                 Name = admin.Name,
-                Key = admin.Key
+                Password = admin.Password
             };
         }
 
-        
+        static public Admin Revert(AdminInfo adminInfo)
+        {
+            return new Admin
+            {
+                Id = adminInfo.Id,
+                Name = adminInfo.Name,
+                Password = adminInfo.Password
+            };
+        }
     }
 }

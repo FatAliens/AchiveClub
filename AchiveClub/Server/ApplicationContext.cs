@@ -16,7 +16,7 @@ public class ApplicationContext : DbContext
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
-        Database.EnsureDeleted();
+        //Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -48,7 +48,7 @@ public class ApplicationContext : DbContext
         var adminFaker = new Faker<Admin>("ru")
             .RuleFor(u => u.Id, f => adminIdCounter++)
             .RuleFor(a => a.Name, f => f.Person.FullName)
-            .RuleFor(a => a.Key, f => f.Internet.Password(8));
+            .RuleFor(a => a.Password, f => f.Internet.Password(8));
 
         var supervisorFaker = new Faker<Supervisor>("ru")
             .RuleFor(u => u.Id, f => supervisorIdCounter++)
@@ -104,7 +104,7 @@ public class ApplicationContext : DbContext
         admins.Add(new Admin
         {
             Name = "admin",
-            Key = "admin",
+            Password = "admin",
             Id = adminIdCounter++
         });
 
