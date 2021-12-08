@@ -71,6 +71,9 @@ footer img {
 .topThreeClub:hover {
     cursor: pointer;
 }
+.topClub:hover {
+    cursor: pointer;
+}
 .topTwoClub {
     background: linear-gradient(180deg, #A7A7A7 0%, #D1D1CF 25.31%);
     border-radius: 20px;

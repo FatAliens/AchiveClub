@@ -81,6 +81,7 @@ nav {
         font-weight: normal;
         text-decoration: none;
         color: white;
+        cursor: pointer;
     }
 
 #locate, #XPLevel, #allTasks, #completedTasks, #nameTask, #reward, #notCompletedTasks {
