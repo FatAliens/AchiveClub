@@ -9,16 +9,16 @@ namespace AchiveClub.Server.Models
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Admin))]
-        public int SupervisorRefId { get; set; }       
+        [ForeignKey(nameof(Supervisor))]
+        public int SupervisorId { get; set; }       
         public Supervisor Supervisor { get; set; }
 
         [ForeignKey(nameof(User))]
-        public int UserRefId { get; set; }  
+        public int UserId { get; set; }  
         public User User { get; set; }
 
         [ForeignKey(nameof(Achive))]
-        public int AchiveRefId { get; set; }
+        public int AchiveId { get; set; }
         public Achievement Achive { get; set; }
 
         [Required]

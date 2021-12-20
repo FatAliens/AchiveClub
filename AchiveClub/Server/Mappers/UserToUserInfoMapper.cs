@@ -20,7 +20,7 @@ namespace AchiveClub.Server.Mappers
                     Description = achive.Description,
                     Xp = achive.Xp,
                     LogoURL = achive.LogoURL,
-                    Completed = user.CompletedAchivements.Where(a => a.AchiveRefId == achive.Id).Any()
+                    Completed = user.CompletedAchivements.Where(a => a.AchiveId == achive.Id).Any()
                 });
             }
 

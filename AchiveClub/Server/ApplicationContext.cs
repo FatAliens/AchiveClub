@@ -64,9 +64,9 @@ public class ApplicationContext : DbContext
 
         var comletedAchiveFaker = new Faker<CompletedAchievement>("ru")
             .RuleFor(a => a.Id, f => completedAchiveIdCounter++)
-            .RuleFor(a => a.AchiveRefId, f => f.Random.Number(1, achiveCount))
-            .RuleFor(a => a.UserRefId, f => f.Random.Number(1, usersCount))
-            .RuleFor(a => a.SupervisorRefId, f => f.Random.Number(1, adminsCount))
+            .RuleFor(a => a.AchiveId, f => f.Random.Number(1, achiveCount))
+            .RuleFor(a => a.UserId, f => f.Random.Number(1, usersCount))
+            .RuleFor(a => a.SupervisorId, f => f.Random.Number(1, adminsCount))
             .RuleFor(a => a.DateOfCompletion, f => f.Date.Recent(60));
 
         string[] clubTitles =

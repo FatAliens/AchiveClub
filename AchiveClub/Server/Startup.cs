@@ -24,8 +24,8 @@ namespace AchiveClub.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = "Server=(localdb)\\mssqllocaldb;Database=AchiveClub;Trusted_Connection=True;";
-            //string connection = Configuration.GetConnectionString("DefaultConnection");
+            //string connection = "Server=(localdb)\\mssqllocaldb;Database=AchiveClub;Trusted_Connection=True;";
+            string connection = Configuration.GetConnectionString("DefaultConnection");
             
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
