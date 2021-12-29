@@ -13,5 +13,5 @@
 
     protected override void OnInitialized() => BlazoredModal.SetTitle("Передайте устройство преподавателю для подтверждения выполнения!");
 
-    async Task SubmitForm() => await BlazoredModal.CloseAsync(ModalResult.Ok(_message));
+    void SubmitForm() => BlazoredModal.Close(ModalResult.Ok(_message));
 }

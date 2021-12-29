@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchiveClub.Client", "Achive
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AchiveClub.Shared", "AchiveClub\Shared\AchiveClub.Shared.csproj", "{6962FC20-744F-47C9-81A7-53421E3AC0B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{485AC4DB-9FC7-4B98-9333-A4E7A2B62383}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{6962FC20-744F-47C9-81A7-53421E3AC0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6962FC20-744F-47C9-81A7-53421E3AC0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6962FC20-744F-47C9-81A7-53421E3AC0B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{485AC4DB-9FC7-4B98-9333-A4E7A2B62383}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{485AC4DB-9FC7-4B98-9333-A4E7A2B62383}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{485AC4DB-9FC7-4B98-9333-A4E7A2B62383}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{485AC4DB-9FC7-4B98-9333-A4E7A2B62383}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
